@@ -11,5 +11,6 @@ cas9_generic = ComponentDefinition('cas9_generic', BIOPAX_PROTEIN)
 doc.addComponentDefinition(cas9_generic)
 
 cd0 = ComponentDefinition('cd0')
+doc.addComponentDefinition(cd0)
 
-print(doc)
+doc.write('SBOL_example.xml')

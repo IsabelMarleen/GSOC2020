@@ -15,13 +15,16 @@ from sbol import *
 
 #Read in Excel file
 
-path = '~/Downloads/Darpa Template.xlsx'
+path = '~/Desktop/Darpa Template.xlsx'
 df = pd.read_excel (path)
 print(df)
 
+#Specify basic DNA parts out of master table
 df[df.columns[0:6]]
 basic_DNA_parts = df[12:37]
-
+#Reassign index and column names
+basic_DNA_parts.reset_index(drop=True, inplace=True)
+basic_DNA_parts.columns = basic_DNA_parts.iloc[0]
 
 #Create SBOL document
 doc = Document()
@@ -29,6 +32,7 @@ doc = Document()
 #Define SBOL object and components
 GFP = ComponentDefinition('GFP', BIOPAX_DNA)
 doc.addComponentDefinition(GFP)
+
        
 sequence =  """atgcgtaaag gagaagaact tttcactgga gttgtcccaa ttcttgttga
             attagatggt gatgttaatg ggcacaaatt ttctgtcagt ggagagggtg
@@ -50,3 +54,7 @@ doc.addSequence(GFP_seq)
 
 #Export
 doc.write('SBOL_example.xml')
+
+basic_DNA_parts.renameindex={1: 'a'})
+
+

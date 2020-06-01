@@ -14,8 +14,10 @@ from sbol import Document
 from sbol import Component
 
 #Read in Excel file
+cwd = os.getcwd() #get current working directory
+path = os.path.join(cwd, "Desktop", "Darpa Template.xlsx")
 
-path = '~/Desktop/Darpa Template.xlsx'
+#path = '~/Desktop/Darpa Template.xlsx'
 df = pd.read_excel (path)
 print(df)
 

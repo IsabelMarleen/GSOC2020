@@ -6,12 +6,12 @@ Created on Sun May 24 18:33:56 2020
 @author: isapoetzsch
 """
 
-#Setuo
+#Setup
 import pandas as pd
 import os
 import sbol
 from sbol import Document
-from sbol import *
+from sbol import Component
 
 #Read in Excel file
 
@@ -28,7 +28,7 @@ basic_DNA_parts.columns = basic_DNA_parts.iloc[0]
 basic_DNA_parts = basic_DNA_parts.drop([0])
 #Line to remove space in part name strings to avoid error when using that name 
 #when defining components
-basic_DNA_parts['Part Name'].apply(basic_DNA_parts.replace( [' '], ['_']))
+#basic_DNA_parts['Part Name'] = basic_DNA_parts['Part Name'].map(basic_DNA_parts['Part Name'].replace, [' '], ['_'])
 
 #Create SBOL document
 doc = Document()
@@ -36,8 +36,9 @@ doc = Document()
 #Define SBOL object and components
 #Not yet functional because blanks in Part Name column
 molecule_type = BIOPAX_DNA
+component = GFP
 
 for component in basic_DNA_parts['Part Name']: 
-   component = ComponentDefinition(component, molecule_type)
+    component = ComponentDefinition(component, molecule_type)
 
 

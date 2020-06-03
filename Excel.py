@@ -24,20 +24,20 @@ filled_table = pd.read_excel (path2, sheet_name = "Library", header=None)
 blank_table.fillna("0", inplace = True)
 filled_table.fillna("0", inplace = True)
 
-#Create a dict
+#Create dict
 library_fixed = {
-    "Metadata" : blank_table.loc[[ 0,1,2,3,4,5,6,7 ], [ 0 ]] ,
-    "Design Description" : blank_table.loc[[ 9 ], [ 0 ]],
-    "Parts" : blank_table.loc[[ 13 ], [ 0,1,2,3,4,5]]
+    "Metadata" : blank_table.loc[[ 0,1,2,3,4,5,6,7 ], [ 0 ]].values.tolist() ,
+    "Design Description" : blank_table.loc[[ 9 ], [ 0 ]].values.tolist(),
+    "Parts" : blank_table.loc[[ 13 ], [ 0,1,2,3,4,5]].values.tolist()
     }
 
 library_filled = {
-    "Metadata" : filled_table.loc[[ 0,1,2,3,4,5,6,7 ], [ 0 ]],
-    "Design Description" : blank_table.loc[[ 9 ], [ 0 ]],
-    "Parts" : filled_table.loc[[ 13 ], [ 0,1,2,3,4,5]]
+    "Metadata" : filled_table.loc[[ 0,1,2,3,4,5,6,7 ], [ 0 ]].values.tolist(),
+    "Design Description" : blank_table.loc[[ 9 ], [ 0 ]].values.tolist(),
+    "Parts" : filled_table.loc[[ 13 ], [ 0,1,2,3,4,5]].values.tolist()
     }
 
-
+#Compare spreadsheet to template to see if template has been corrupted
 print( library_fixed == library_filled)
 
 

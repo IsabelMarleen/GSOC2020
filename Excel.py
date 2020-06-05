@@ -50,7 +50,7 @@ def createdict (df):
     "Design Description" : df.loc[[ 9 ], [ 0 ]].values.tolist(),
     "Parts" : df.loc[[ 13 ], [ 0,1,2,3,4,5]].values.tolist()
     }
-    return [library_filled]
+    return library_filled
 
 filled_table = readspreadsheet(path2)
 library_filled = createdict(filled_table)

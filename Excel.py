@@ -17,8 +17,8 @@ from sbol import Component
 #Create Template
 #Read in Excel file
 cwd = os.getcwd() #get current working directory
-path = os.path.join(cwd, "Desktop", "darpa_template_blank.xlsx")
-path2 = os.path.join(cwd, "Desktop", "darpa_template.xlsx")
+path = os.path.join(cwd, "Documents", "Utah 2020", "GSoC", "GSOC2020", "darpa_template_blank.xlsx")
+path2 = os.path.join(cwd, "Documents", "Utah 2020", "GSoC", "GSOC2020", "darpa_template.xlsx")
 blank_table = pd.read_excel (path, sheet_name = "Library", header=None)
 
 #Replace NA values
@@ -53,6 +53,8 @@ def createdict (df):
     return library_filled
 
 filled_table = readspreadsheet(path2)
+#Convert into dataframe before problem with function is fixed
+filled_table = filled_table[0]
 library_filled = createdict(filled_table)
 
 
@@ -66,17 +68,6 @@ if library_fixed != library_filled:
 else:
     print("Bohoo")
     
-
-# #Specify basic DNA parts out of master table
-# df[df.columns[0:6]]
-# basic_DNA_parts = df[12:37]
-# #Reassign index and column names
-# basic_DNA_parts.reset_index(drop=True, inplace=True)
-# basic_DNA_parts.columns = basic_DNA_parts.iloc[0]
-# basic_DNA_parts = basic_DNA_parts.drop([0])
-# #Line to remove space in part name strings to avoid error when using that name 
-# #when defining components
-# #basic_DNA_parts['Part Name'] = basic_DNA_parts['Part Name'].map(basic_DNA_parts['Part Name'].replace, [' '], ['_'])
 
 #Create SBOL document
 doc = Document()

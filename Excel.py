@@ -10,13 +10,13 @@ Created on Sun May 24 18:33:56 2020
 import pandas as pd
 import os
 import logging
-import sbol
-from sbol import Document
-from sbol import Component
+import sbol2
+from sbol2 import Document, Component
 
 #Create Template
 #Read in Excel file
 cwd = os.getcwd() #get current working directory
+cwd = os.path.dirname(os.path.realpath(__file__)) #get current working directory
 path = os.path.join(cwd, "Documents", "Utah 2020", "GSoC", "GSOC2020", "darpa_template_blank.xlsx")
 path2 = os.path.join(cwd, "Documents", "Utah 2020", "GSoC", "GSOC2020", "darpa_template.xlsx")
 blank_table = pd.read_excel (path, sheet_name = "Library", header=None)
@@ -57,8 +57,6 @@ filled_table = readspreadsheet(path2)
 filled_table = filled_table[0]
 library_filled = createdict(filled_table)
 
-
-
 #Compare spreadsheet to template to see if template has been corrupted
 print( library_fixed == library_filled)
 
@@ -66,8 +64,20 @@ print( library_fixed == library_filled)
 if library_fixed != library_filled:
     logging.warning('The template spreadsheet has been corrupted')
 else:
-    print("Bohoo")
+    print("No error") #Security check
     
+#Extract data from filled spreadsheet for analysis
+
+#If Statements to assess what data is present and to add it to a dict
+    #in the long run it should be a loop that goes through all components
+if filled_table.loc[[14], [0]] != 0:
+    if filled_table.loc[[14], [4]] == 0 or filled_table.loc[[14], [4]] == 0:
+        logging.warning('There is required information missing in row 14')
+    else :
+        #for entry in filled_table.loc[14]:
+         = { "Partname" : 
+
+
 
 #Create SBOL document
 doc = Document()

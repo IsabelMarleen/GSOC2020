@@ -8,86 +8,84 @@ Created on Sun May 24 18:33:56 2020
 
 #Setup
 import pandas as pd
+import numpy as np
 import os
 import logging
 import sbol2
-from sbol2 import Document, Component
-
-#Create Template
-#Read in Excel file
-cwd = os.getcwd() #get current working directory
-cwd = os.path.dirname(os.path.realpath(__file__)) #get current working directory
-path = os.path.join(cwd, "Documents", "Utah 2020", "GSoC", "GSOC2020", "darpa_template_blank.xlsx")
-path2 = os.path.join(cwd, "Documents", "Utah 2020", "GSoC", "GSOC2020", "darpa_template.xlsx")
-blank_table = pd.read_excel (path, sheet_name = "Library", header=None)
-
-#Replace NA values
-blank_table.fillna("0", inplace = True)
-
-#Create dict
-library_fixed = {
-    "Metadata" : blank_table.loc[[ 0,1,2,3,4,5,6,7 ], [ 0 ]].values.tolist() ,
-    "Design Description" : blank_table.loc[[ 9 ], [ 0 ]].values.tolist(),
-    "Parts" : blank_table.loc[[ 13 ], [ 0,1,2,3,4,5]].values.tolist()
-    }
+from sbol2 import Document, Component, ComponentDefinition
+from sbol2 import BIOPAX_DNA, Sequence, SBOL_ENCODING_IUPAC
 
 
-#Read in filled in spreadsheet
-def readspreadsheet( path ):
-   "the function reads and formats an excel spreadsheet"
-   #Read function
-   filled_table = pd.read_excel (path, sheet_name = "Library", header=None)
-   #Replace NA
-   filled_table.fillna("0", inplace = True)
-   print(type(filled_table))
-   return [filled_table]
+cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
+path_blank = os.path.join(cwd, "darpa_template_blank.xlsx")
+path_filled = os.path.join(cwd, "darpa_template.xlsx")
 
-def createdict (df):
-    "the function creates a dictionary from a pandas df"
-    #Create dict
-    library_filled = {
-    "Metadata" : df.loc[[ 0,1,2,3,4,5,6,7 ], [ 0 ]].values.tolist(),
-    "Design Description" : df.loc[[ 9 ], [ 0 ]].values.tolist(),
-    "Parts" : df.loc[[ 13 ], [ 0,1,2,3,4,5]].values.tolist()
-    }
-    return library_filled
 
-filled_table = readspreadsheet(path2)
-#Convert into dataframe before problem with function is fixed
-filled_table = filled_table[0]
-library_filled = createdict(filled_table)
+#Read in template and filled spreadsheet
+def read_spreadsheet( path, start_row, nrows, use_cols ):
+    """
+    the function reads and formats an excel spreadsheet
 
-#Compare spreadsheet to template to see if template has been corrupted
-print( library_fixed == library_filled)
+    Parameters
+    ----------
+    path : STRING
+        Path to Excel Spreadsheet
+    start_row : integer
+        Defines first row to be read
+    nrows: INTEGER
+        Defines number of rows to be read
+    usecols: INTEGER
+        Defines which columns should be read
+        
+    #Add to here
 
-#Logging errors if spreadsheet doesn't follow template
-if library_fixed != library_filled:
-    logging.warning('The template spreadsheet has been corrupted')
-else:
-    print("No error") #Security check
+    Returns
+    -------
+    pandas dataframe
+        DESCRIPTION.
+
+    """
+    basic_DNA_parts = pd.read_excel (path, sheet_name = "Library",
+                                  header= 0, skiprows = start_row)
     
-#Extract data from filled spreadsheet for analysis
+    metadata = pd.read_excel (path, sheet_name = "Library",
+                                  header= None, nrows = nrows, usecols = use_cols)
+    
+    return (basic_DNA_parts, metadata)
 
-#If Statements to assess what data is present and to add it to a dict
-    #in the long run it should be a loop that goes through all components
-if filled_table.loc[[14], [0]] != 0:
-    if filled_table.loc[[14], [4]] == 0 or filled_table.loc[[14], [4]] == 0:
-        logging.warning('There is required information missing in row 14')
-    else :
-        #for entry in filled_table.loc[14]:
-         = { "Partname" : 
+filled_data, filled_metadata = readspreadsheet(path_filled,  
+                start_row = 13, nrows = 8, use_cols = [0,1])
+blank_data, blank_metadata = readspreadsheet(path_blank,  
+                start_row = 13, nrows = 8, use_cols = [0,1])
 
+
+#Quality control spreadsheet
+comparison = np.where((filled_metadata == blank_metadata)|(blank_metadata.isna()), True, False)
+if not(comparison.all()) :
+    logging.warning("Some cells do not match the template")
+    temporary = "xyz"
+    logging.warning(f"The cells that do not match are {temporary}")
+
+filled_columns = set(filled_data.columns)
+blank_columns = set(blank_data.columns)
+
+if not(blank_columns.issubset(filled_columns)) :
+    logging.warning("Required columns are missing")
 
 
 #Create SBOL document
 doc = Document()
 
 #Define SBOL object and components
-#Not yet functional because blanks in Part Name column
-molecule_type = BIOPAX_DNA
-component = GFP
+molecule_type = BIOPAX_DNA #Change later
 
-for component in basic_DNA_parts['Part Name']: 
-    component = ComponentDefinition(component, molecule_type)
+for index, row in filled_data.iterrows():
+    component = ComponentDefinition(row["Part Name"], molecule_type)
+    doc.addComponentDefinition(component)
+    
+    sequence = Sequence(f"{row['Part Name']}_sequence", row["Sequence"], SBOL_ENCODING_IUPAC)
+    doc.addSequence(sequence)
+
+doc.write('SBOL_example.xml')
 
 

@@ -78,7 +78,7 @@ error_data, error_metadata  = read_spreadsheet(path_error,
 
 #Description
 if description.columns != "Design Description":
-    logging.warning("A10 has been corrupted, it should be labelled 'Design Description'")
+    logging.warning("A10 has been corrupted, it should be labelled 'Design Description' with the description in A11")
 
 #Metadata
 comparison = np.where((filled_metadata == blank_metadata)|(blank_metadata.isna()), True, False)
@@ -109,15 +109,22 @@ molecule_type = BIOPAX_DNA #Change later
 for index, row in filled_data.iterrows():
     component = ComponentDefinition(row["Part Name"], molecule_type)
     component.roles = row["Role"]
+    if row["Description (Optional)"] != "nan":
+        component.description = row["Description (Optional)"]
     doc.addComponentDefinition(component)
     
+    row["Sequence"] = row["Sequence"].replace(" ", "")
     sequence = Sequence(f"{row['Part Name']}_sequence", row["Sequence"], SBOL_ENCODING_IUPAC)
     doc.addSequence(sequence)
+    #Some problem with sequence, error message: sbol-10405: Weak Validation Error:
+    # The elements property of a Sequence MUST be consistent with its encoding property.
+    # Reference: SBOL Version 2.3.0 Section 7.6 on page 20
+    # : http://examples.org/Sequence/GFP_sequence/1
 
 #Metadata
 doc.description = description.iloc[0,0]
 doc.name = filled_metadata.iloc[0, 1]
 
-doc.write('SBOL_example.xml')
+doc.write('SBOL_testcollection.xml')
 
 

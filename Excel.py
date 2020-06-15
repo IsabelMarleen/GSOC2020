@@ -96,7 +96,7 @@ filled_columns = set(filled_data.columns)
 blank_columns = set(blank_data.columns)
 
 if not(blank_columns.issubset(filled_columns)) :
-    logging.warning("Required columns are missing")
+    logging.warning("Some of the required columns are missing")
 
 
 #Create SBOL document

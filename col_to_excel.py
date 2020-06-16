@@ -17,7 +17,7 @@ def col_to_excel(col):
     print(col_to_excel(9))
 
     """
-    excelCol = ""
+    excel_col = ""
     div = col 
     
     while div>0:

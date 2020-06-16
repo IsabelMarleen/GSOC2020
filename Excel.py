@@ -15,6 +15,36 @@ import sbol2
 from sbol2 import Document, Component, ComponentDefinition
 from sbol2 import BIOPAX_DNA, Sequence, SBOL_ENCODING_IUPAC
 
+
+def col_to_excel(col):
+    """
+    Converts the column number to the excel column name (A, B, ... AA  etc)
+
+    Parameters
+    ----------
+    col : INTEGER
+        The number of the column to convert. Note that 1 converts to A
+
+    Returns
+    -------
+    excel_col : STRING
+        The string which describes the name of the column in Excel
+        
+    Example
+    -------
+    print(col_to_excel(9))
+
+    """
+    excel_col = ""
+    div = col 
+    
+    while div>0:
+        (div, mod) = divmod(div-1, 26) # will return (x, 0 .. 25)
+        excel_col = chr(mod + 65) + excel_col
+
+    return excel_col
+
+
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
 cwd = os.path.join(cwd, "Documents", "Utah 2020", "GSoC", "GSOC2020")
 path_blank = os.path.join(cwd, "darpa_template_blank.xlsx")
@@ -60,7 +90,7 @@ def read_spreadsheet( path, start_row, nrows, use_cols ):
                                   header= None, nrows = nrows, usecols = use_cols)
     
     return (basic_DNA_parts, metadata)
-
+use_cols = [0,1]
 filled_data, filled_metadata = read_spreadsheet(path_filled,  
                 start_row = 13, nrows = 8, use_cols = [0,1])
 blank_data, blank_metadata = read_spreadsheet(path_blank,  
@@ -69,6 +99,8 @@ blank_data, blank_metadata = read_spreadsheet(path_blank,
 description = pd.read_excel(path_filled, sheet_name= "Library", skiprows = 9, 
                             nrows = 1, usecols = [0])
 
+ontology = pd.read_excel(path_filled, header=None, sheet_name= "Ontology Terms", skiprows=3, index_col=0)
+ontology= ontology.to_dict("dict")[1]
 
 #Quality control spreadsheet
 ##Load erroneaous spreadsheet for testing, temporary part
@@ -82,13 +114,20 @@ if description.columns != "Design Description":
 
 #Metadata
 comparison = np.where((filled_metadata == blank_metadata)|(blank_metadata.isna()), True, False)
-metadata_cells = pd.DataFrame(data = {"Names": blank_metadata.iloc[:, 0],"Cells": 
-            ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8'] } ) #add as column to filled_metadata instead?
+excel_cell_names = []
+for column in range(0, len(use_cols)):
+    for row in range(0, comparison.shape[0]):
+        col = use_cols[column]
+        excel_cell_names.append(f"{col_to_excel(col+1)}{row+1}")
+excel_cell_names = np.reshape(excel_cell_names, comparison.shape, order='F')
+excel_cell_names = pd.DataFrame(excel_cell_names)
+excel_cell_names.where(np.logical_not(comparison))
+
 if not(comparison.all()) :
     logging.warning("Some cells do not match the template")
     for number in range(0,7) :
         if filled_metadata.iloc[number, 0] != blank_metadata.iloc[number, 0]:
-            logging.warning(f"""The excel cell {metadata_cells.loc[number, 'Cells']} has been corrupted and 
+            logging.warning(f"""The excel cell {excel_cell_names.loc[number, 0]} has been corrupted and 
                   should contain {blank_metadata.iloc[number, 0]}""")
                   
 #Library data
@@ -105,21 +144,20 @@ doc = Document()
 #Define SBOL object and components
 #Parts Library
 molecule_type = BIOPAX_DNA #Change later
+part_column = "Part Name"
 
 for index, row in filled_data.iterrows():
-    component = ComponentDefinition(row["Part Name"], molecule_type)
+    component = ComponentDefinition(row[part_column], molecule_type)
     component.roles = row["Role"]
     if row["Description (Optional)"] != "nan":
         component.description = row["Description (Optional)"]
     doc.addComponentDefinition(component)
     
-    row["Sequence"] = row["Sequence"].replace(" ", "")
+    row["Sequence"] = "".join(row["Sequence"].split())
+    row["Sequence"] = row["Sequence"].replace( u"\ufeff", "")
+    row["Sequence"] = row["Sequence"].lower()
     sequence = Sequence(f"{row['Part Name']}_sequence", row["Sequence"], SBOL_ENCODING_IUPAC)
     doc.addSequence(sequence)
-    #Some problem with sequence, error message: sbol-10405: Weak Validation Error:
-    # The elements property of a Sequence MUST be consistent with its encoding property.
-    # Reference: SBOL Version 2.3.0 Section 7.6 on page 20
-    # : http://examples.org/Sequence/GFP_sequence/1
 
 #Metadata
 doc.description = description.iloc[0,0]

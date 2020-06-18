@@ -10,6 +10,7 @@ Created on Sun May 24 18:33:56 2020
 import pandas as pd
 import numpy as np
 import os
+import math
 import logging
 import col_to_excel
 from col_to_excel import col_to_excel
@@ -150,7 +151,7 @@ part_column = "Part Name"
 for index, row in filled_data.iterrows():
     component = ComponentDefinition(row[part_column], molecule_type)
     component.roles = row["Role"]
-    if row["Description (Optional)"] != "nan":
+    if not(math.isnan(row["Description (Optional)"])):
         component.description = row["Description (Optional)"]
     doc.addComponentDefinition(component)
     

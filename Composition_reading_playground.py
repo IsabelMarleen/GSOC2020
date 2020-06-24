@@ -16,7 +16,8 @@ from col_to_excel import col_to_excel
 import sbol2
 from sbol2 import Document, Component, ComponentDefinition
 from sbol2 import BIOPAX_DNA, Sequence, SBOL_ENCODING_IUPAC
-from Excel import 
+from sbol2 import ModuleDefinition
+from Excel import read_composition
 
 
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
@@ -24,23 +25,41 @@ path_blank = os.path.join(cwd, "darpa_template_blank.xlsx")
 path_filled = os.path.join(cwd, "darpa_template.xlsx")
 
 #read in the whole sheet
-table = pd.read_excel (path_filled, sheet_name = "Composite Parts", header = None)
+table = pd.read_excel (path_filled, sheet_name = "Composite Parts", header = None) # below metadata
 
 #Loop over all rows and find those where each block begins
 list1 = []
+d = dict()
 for index, row in table.iterrows():
-    if row[0] == "Collection Name:":
-        list1.append(index)     
-#Find the difference between the beginning rows to determine the length of each block
-list2 = np.diff(list1) 
+    if row[0] == "Collection Name:" and table.iloc[index+1][0] == "Name:" : #add other rows, create list and check against template list
+        list1.append(index)    
+        d[index] = {"Collection Name": table.iloc[index][1],
+                    "Name" : table.iloc[index+1][1],
+                    "Parts": {} }
+    #add else to find out which rows have wrong label
+    else:
+        names = table.iloc[index: index+6][0].tolist()
+        print(names)
+        
+for index, value in enumerate(list1):
+    if index == len(list1)-1:
+        parts = table.iloc[value+5: len(table)][1].dropna()
+    else:
+        parts = table.iloc[value+5: list1[index+1]][1].dropna()
+    
+    if len(parts) == 0:
+        del d[value]
+    else:
+        d[value]['Parts'] = parts.tolist()
+    print(parts)
+    
+for key, value in d.items():
+    print(value["Collection Name"])
 
-#Reading in first block as example using the values determined above
-table_1 = pd.read_excel (path_filled, sheet_name = "Composite Parts", 
-                                      skiprows= list1[1]-1, nrows = list2[1])
 
 
-#Failed attempt to automatise the table creation, 
-#cannot create variables like that need to find better alternative
-#for entry in list1 and value in list2:
-#   exec(f'table_{entry}') = pd.read_excel (path_filled, sheet_name = "Composite Parts", 
-#                                      skiprows= entry, nrows = value)
+
+
+doc = Document()
+template = ModuleDefinition('template')
+doc.addModuleDefinition(template)

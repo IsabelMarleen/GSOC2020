@@ -25,9 +25,10 @@ path_filled = os.path.join(cwd, "darpa_template.xlsx")
 
 
 #Read in template and filled spreadsheet for the Parts library
-def read_library(path, start_row, nrows, use_cols):
+def read_library(path, start_row, nrows, description_row, use_cols = [0, 1], 
+                 sheet_name = "Library", description_col = [0]):
     """
-    the function reads and formats an excel spreadsheet sheet with the name "Library"
+    the function reads and formats an excel spreadsheet
 
     Parameters
     ----------
@@ -37,8 +38,12 @@ def read_library(path, start_row, nrows, use_cols):
         Defines first row to be read for the parts table
     nrows: INTEGER
         Defines number of rows to be read for the metadata section
-    usecols: LIST
+    usecols: LIST, default = [0, 1]
         Defines which columns should be read for the metadata section (note column A is 0)
+    sheet_name: STRING, default = "Library"
+        Defines the name of the spreadsheet that should be read
+    description_row: INTEGER
+        Defines the row where the description is situated
     
 
     Returns
@@ -47,6 +52,7 @@ def read_library(path, start_row, nrows, use_cols):
          The parts table with headers from row=start_row and data from all rows after that.
      metadata: DATAFRAME, (usecols x nrows)
          A header less table of length nrows and width usecols
+    description: 
      
      Example
      -------
@@ -56,83 +62,40 @@ def read_library(path, start_row, nrows, use_cols):
                  start_row = 13, nrows = 8, use_cols = [0,1])
 
     """
-    basic_DNA_parts = pd.read_excel (path, sheet_name = "Library",
-                                  header= 0, skiprows = start_row)
+    basic_DNA_parts = pd.read_excel (path, sheet_name = sheet_name, 
+                                     header= 0, skiprows = start_row)
     
-    metadata = pd.read_excel (path, sheet_name = "Library",
-                                  header= None, nrows = nrows, usecols = use_cols)
+    metadata = pd.read_excel (path, sheet_name = sheet_name,
+                              header= None, nrows = nrows, usecols = use_cols)
     
-    return (basic_DNA_parts, metadata)
+    description = pd.read_excel (path, sheet_name = sheet_name, skiprows = description_row,
+                                 nrows = 1, usecols = description_col)
+    
+    return (basic_DNA_parts, metadata, description)
 
 #Values for specific darpa.template
-use_cols = [0,1]
 start_row = 13
 nrows = 8
+description_row = 9
+description_col = 0
+use_cols = [0,1]
 
-filled_library, filled_library_metadata = read_library(path_filled,  
-                start_row = start_row, nrows = nrows, use_cols = use_cols)
-blank_library, blank_library_metadata = read_library(path_blank,  
-                start_row = start_row, nrows = nrows, use_cols = use_cols)
+filled_library, filled_library_metadata, filled_description = read_library(path_filled,  
+                start_row = start_row, nrows = nrows, description_row = description_row)
+blank_library, blank_library_metadata, blank_description = read_library(path_blank,  
+                start_row = start_row, nrows = nrows, description_row = description_row)
 
-description = pd.read_excel(path_filled, sheet_name= "Library", skiprows = 9, 
-                            nrows = 1, usecols = [0])
 
 ontology = pd.read_excel(path_filled, header=None, sheet_name= "Ontology Terms", skiprows=3, index_col=0)
 ontology= ontology.to_dict("dict")[1]
 
-#Read in Composite Parts
-def read_composition(path, start_row, nrows, use_cols):
-    """
-    the function reads and formats an excel spreadsheet sheet with the name "Composite Parts"
-
-    Parameters
-    ----------
-    path : STRING
-        Path to Excel Spreadsheet
-    start_row : INTEGER
-        Defines first row to be read for the parts table
-    nrows: INTEGER
-        Defines number of rows to be read for the metadata section
-    usecols: LIST
-        Defines which columns should be read for the metadata section (note column A is 0)
-    
-
-    Returns
-    -------
-     composite_DNA_parts: DATAFRAME
-         The parts table with headers from row=start_row and data from all rows after that.
-     metadata: DATAFRAME, (usecols x nrows)
-         A header less table of length nrows and width usecols
-     
-    Example
-    -------
-     cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
-     path_filled = os.path.join(cwd, "darpa_template.xlsx")
-     filled_data, filled_metadata = read_composition(path_filled,  
-                 start_row = 13, nrows = 8, use_cols = [0,1])
-
-    """
-    composite_DNA_parts = pd.read_excel (path, sheet_name = "Composite Parts",
-                                  header= 0, skiprows = start_row)
-    
-    metadata = pd.read_excel (path, sheet_name = "Composite Parts",
-                                  header= None, nrows = nrows, usecols = use_cols)
-    
-    return (composite_DNA_parts, metadata)
-
-filled_composition, filled_composition_metadata = read_composition(path_filled, start_row, nrows, use_cols)
-blank_composition, blank_composition_metadata = read_composition(path_blank, start_row, nrows, use_cols)
-
 
 #Quality control spreadsheet
-##Load erroneaous spreadsheet for testing, temporary part
-path_error = os.path.join(cwd, "darpa_template_error.xlsx")
-error_data, error_metadata  = read_library(path_error,  
-                start_row = 13, nrows = 8, use_cols = [0,1])
 
 #Description
-if description.columns != "Design Description":
-    logging.warning("A10 has been corrupted, it should be labelled 'Design Description' with the description in A11")
+if filled_description.columns != "Design Description":
+    m = col_to_excel(description_col+1)
+    logging.warning(f"{m}{description_row+1} has been corrupted, it should be labelled 'Design Description' with the description in A11")
 
 #Metadata
 comparison = np.where((filled_library_metadata == blank_library_metadata)|(blank_library_metadata.isna()), True, False)
@@ -157,7 +120,8 @@ filled_columns = set(filled_library.columns)
 blank_columns = set(blank_library.columns)
 
 if not(blank_columns.issubset(filled_columns)) :
-    logging.warning("Some of the required columns are missing")
+    missing_columns = blank_columns - filled_columns
+    logging.warning(f"Some of the required columns are missing. They are {missing_columns}.")
 
 
 #Create SBOL document
@@ -189,7 +153,7 @@ for index, row in filled_library.iterrows():
     component.sequences = sequence
 
 #Metadata
-doc.description = str(description.values)
+doc.description = str(filled_description.values)
 doc.name = filled_library_metadata.iloc[0, 1]
 
 doc.write('SBOL_testcollection.xml')

@@ -1,7 +1,7 @@
 #Setup
-import sbol
-from sbol import Document
-from sbol import *
+import sbol2
+from sbol2 import Document
+from sbol2 import *
 
 #Create SBOL document
 doc = Document()

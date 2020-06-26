@@ -17,7 +17,6 @@ import sbol2
 from sbol2 import Document, Component, ComponentDefinition
 from sbol2 import BIOPAX_DNA, Sequence, SBOL_ENCODING_IUPAC
 from sbol2 import ModuleDefinition
-from Excel import read_composition
 
 
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory

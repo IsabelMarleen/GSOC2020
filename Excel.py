@@ -44,6 +44,8 @@ def read_library(path, start_row, nrows, description_row, use_cols = [0, 1],
         Defines the name of the spreadsheet that should be read
     description_row: INTEGER
         Defines the row where the description is situated
+    description_col: INTEGER, default = 0
+        Defines which column the description is in
     
 
     Returns
@@ -52,14 +54,15 @@ def read_library(path, start_row, nrows, description_row, use_cols = [0, 1],
          The parts table with headers from row=start_row and data from all rows after that.
      metadata: DATAFRAME, (usecols x nrows)
          A header less table of length nrows and width usecols
-    description: 
+    description: DATAFRAME, (description_col x 1)
+         A table consisting usually of a single cell and the header "Design Description"
      
      Example
      -------
      cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
      path_filled = os.path.join(cwd, "darpa_template.xlsx")
-     filled_library, filled_metadata = read_library(path_filled,  
-                 start_row = 13, nrows = 8, use_cols = [0,1])
+     filled_library, filled_metadata, filled_description = read_library(path_filled,  
+                 start_row = 13, nrows = 8, description_row = 9)
 
     """
     basic_DNA_parts = pd.read_excel (path, sheet_name = sheet_name, 
@@ -77,7 +80,7 @@ def read_library(path, start_row, nrows, description_row, use_cols = [0, 1],
 start_row = 13
 nrows = 8
 description_row = 9
-description_col = 0
+description_col = [0]
 use_cols = [0,1]
 
 filled_library, filled_library_metadata, filled_description = read_library(path_filled,  
@@ -94,8 +97,8 @@ ontology= ontology.to_dict("dict")[1]
 
 #Description
 if filled_description.columns != "Design Description":
-    m = col_to_excel(description_col+1)
-    logging.warning(f"{m}{description_row+1} has been corrupted, it should be labelled 'Design Description' with the description in A11")
+    col = col_to_excel(description_col+1)
+    logging.warning(f"{col}{description_row+1} has been corrupted, it should be labelled 'Design Description' with the description in A11")
 
 #Metadata
 comparison = np.where((filled_library_metadata == blank_library_metadata)|(blank_library_metadata.isna()), True, False)
@@ -147,7 +150,7 @@ for index, row in filled_library.iterrows():
     row[sequence_column] = row[sequence_column].replace( u"\ufeff", "")
     row[sequence_column] = row[sequence_column].lower()
     if len(row[sequence_column]) != row[length_column]:
-        logging.warning(f"The length of the sequence {row[part_column]} does not coincide with the length in column 'length (bp)'")
+        logging.warning(f"The length of the sequence {row[part_column]} does not coincide with the length in the corresponding column 'length (bp)'")
     sequence = Sequence(f"{row[part_column]}_sequence", row[sequence_column], SBOL_ENCODING_IUPAC)
     doc.addSequence(sequence)
     component.sequences = sequence

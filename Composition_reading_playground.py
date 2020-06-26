@@ -9,7 +9,6 @@ Created on Sun Jun 21 14:57:34 2020
 import pandas as pd
 import numpy as np
 import os
-import math
 import logging
 import col_to_excel
 from col_to_excel import col_to_excel
@@ -29,16 +28,22 @@ table = pd.read_excel (path_filled, sheet_name = "Composite Parts", header = Non
 #Loop over all rows and find those where each block begins
 list1 = []
 d = dict()
+labels = np.array(["Collection Name:", "Name:", "Description:", "Strain (optional)",
+          "Integration Locus (optional)", "Part Sequence:"])
 for index, row in table.iterrows():
-    if row[0] == "Collection Name:" and table.iloc[index+1][0] == "Name:" : #add other rows, create list and check against template list
+    comparison = np.asarray(table.iloc[index : index+6][0]) == labels
+    if row[0] == "Collection Name:" and comparison.all() :
         list1.append(index)    
         d[index] = {"Collection Name": table.iloc[index][1],
                     "Name" : table.iloc[index+1][1],
                     "Parts": {} }
-    #add else to find out which rows have wrong label
     else:
         names = table.iloc[index: index+6][0].tolist()
-        print(names)
+
+
+for index, row in table.iterrows():
+    print(table.iloc[index : index+6][0])
+
         
 for index, value in enumerate(list1):
     if index == len(list1)-1:

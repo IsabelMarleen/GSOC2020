@@ -64,6 +64,7 @@ for key, value in d.items():
 
 
 
-doc = Document()
+#doc = Document()
 template = ModuleDefinition('template')
+template = template.assemble([component.GFP, tetR, M36010] )
 doc.addModuleDefinition(template)

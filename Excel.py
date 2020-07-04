@@ -16,7 +16,7 @@ import col_to_excel
 from col_to_excel import col_to_excel
 import sbol2
 from sbol2 import Document, Component, ComponentDefinition
-from sbol2 import BIOPAX_DNA, Sequence, SBOL_ENCODING_IUPAC
+from sbol2 import BIOPAX_DNA, Sequence, SBOL_ENCODING_IUPAC, Config
 
 
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
@@ -129,6 +129,7 @@ if not(blank_columns.issubset(filled_columns)) :
 
 #Create SBOL document
 doc = Document()
+Config.setOption('sbol_typed_uris', False)
 
 #Define SBOL object and components
 #Parts Library
@@ -142,6 +143,7 @@ length_column = "length (bp)"
 for index, row in filled_library.iterrows():
     component = ComponentDefinition(row[part_column], molecule_type)
     component.roles = ontology[row[role_column]]
+    component.name = row[part_column]
     if not(pd.isnull(row[description_column])):
         component.description = row[description_column]
     doc.addComponentDefinition(component)

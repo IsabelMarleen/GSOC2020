@@ -44,7 +44,8 @@ for index, row in table.iterrows():
 for index, row in table.iterrows():
     print(table.iloc[index : index+6][0])
 
-        
+all_parts = []
+     
 for index, value in enumerate(list1):
     if index == len(list1)-1:
         parts = table.iloc[value+5: len(table)][1].dropna()
@@ -55,16 +56,18 @@ for index, value in enumerate(list1):
         del d[value]
     else:
         d[value]['Parts'] = parts.tolist()
-    print(parts)
+        all_parts+=d[value]["Parts"] #turn into set to avoid duplicates after for loop
     
 for key, value in d.items():
-    print(value["Collection Name"])
+    print(value["Parts"])
 
 
 
 
 
 #doc = Document()
-template = ModuleDefinition('template')
-template = template.assemble([component.GFP, tetR, M36010] )
-doc.addModuleDefinition(template)
+# template = ModuleDefinition('template')
+# template = template.assemble([])
+# template = template.assemble([GFP, tetR, M36010] )
+# doc.addModuleDefinition(template)
+# doc.GFP

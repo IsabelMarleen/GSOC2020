@@ -41,8 +41,6 @@ for index, row in table.iterrows():
         names = table.iloc[index: index+6][0].tolist()
 
 
-for index, row in table.iterrows():
-    print(table.iloc[index : index+6][0])
 
 all_parts = []
      
@@ -57,12 +55,11 @@ for index, value in enumerate(list1):
     else:
         d[value]['Parts'] = parts.tolist()
         all_parts+=d[value]["Parts"] #turn into set to avoid duplicates after for loop
+        
+all_parts = set(all_parts)
     
-for key, value in d.items():
-    print(value["Parts"])
-
-
-
+#for key, value in d.items():
+#    print(value["Parts"])
 
 
 #doc = Document()

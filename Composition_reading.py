@@ -19,22 +19,21 @@ from sbol2 import ModuleDefinition
 
 
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
-path_blank = os.path.join(cwd, "darpa_template_blank.xlsx")
 path_filled = os.path.join(cwd, "darpa_template.xlsx")
 
 #read in the whole sheet
 table = pd.read_excel (path_filled, sheet_name = "Composite Parts", header = None) # below metadata
 
 #Loop over all rows and find those where each block begins
-list1 = []
-d = dict()
+list_of_rows = []
+compositions = dict()
 labels = np.array(["Collection Name:", "Name:", "Description:", "Strain (optional)",
           "Integration Locus (optional)", "Part Sequence:"])
 for index, row in table.iterrows():
     comparison = np.asarray(table.iloc[index : index+6][0]) == labels
     if row[0] == "Collection Name:" and comparison.all() :
-        list1.append(index)    
-        d[index] = {"Collection Name": table.iloc[index][1],
+        list_of_rows.append(index)    
+        compositions[index] = {"Collection Name": table.iloc[index][1],
                     "Name" : table.iloc[index+1][1],
                     "Parts": {} }
     else:
@@ -44,21 +43,21 @@ for index, row in table.iterrows():
 
 all_parts = []
      
-for index, value in enumerate(list1):
-    if index == len(list1)-1:
+for index, value in enumerate(list_of_rows):
+    if index == len(list_of_rows)-1:
         parts = table.iloc[value+5: len(table)][1].dropna()
     else:
-        parts = table.iloc[value+5: list1[index+1]][1].dropna()
+        parts = table.iloc[value+5: list_of_rows[index+1]][1].dropna()
     
     if len(parts) == 0:
-        del d[value]
+        del compositions[value]
     else:
-        d[value]['Parts'] = parts.tolist()
-        all_parts+=d[value]["Parts"] #turn into set to avoid duplicates after for loop
+        compositions[value]['Parts'] = parts.tolist()
+        all_parts+=compositions[value]["Parts"] #turn into set to avoid duplicates after for loop
         
 all_parts = set(all_parts)
     
-#for key, value in d.items():
+#for key, value in compositions.items():
 #    print(value["Parts"])
 
 

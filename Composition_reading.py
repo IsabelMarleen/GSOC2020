@@ -5,7 +5,7 @@ Created on Sun Jun 21 14:57:34 2020
 
 @author: isapoetzsch
 """
-#Playground
+#Set up
 import pandas as pd
 import numpy as np
 import os
@@ -17,12 +17,45 @@ from sbol2 import Document, Component, ComponentDefinition
 from sbol2 import BIOPAX_DNA, Sequence, SBOL_ENCODING_IUPAC
 from sbol2 import ModuleDefinition
 
-
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
 path_filled = os.path.join(cwd, "darpa_template.xlsx")
+path_blank = os.path.join(cwd, "darpa_template_blank.xlsx")
 
 #read in the whole sheet
-table = pd.read_excel (path_filled, sheet_name = "Composite Parts", header = None) # below metadata
+startrow_composition = 16
+sheet_name = "Composite Parts"
+table = pd.read_excel (path_filled, sheet_name = sheet_name, 
+                       header = None, skiprows = startrow_composition) # below metadata
+
+#Load Metadata and Quality Check
+nrows = 8
+use_cols = [0,1]
+filled_composition_metadata = pd.read_excel (path_filled, sheet_name = sheet_name,
+                              header= None, nrows = nrows, usecols = use_cols)
+blank_composition_metadata = pd.read_excel (path_blank, sheet_name = sheet_name,
+                              header= None, nrows = nrows, usecols = use_cols)
+ 
+comparison = np.where((filled_composition_metadata == blank_composition_metadata)|(blank_composition_metadata.isna()), True, False)
+excel_cell_names = []
+for column in range(0, len(use_cols)):
+    for row in range(0, comparison.shape[0]):
+        col = use_cols[column]
+        excel_cell_names.append(f"{col_to_excel(col+1)}{row+1}")
+excel_cell_names = np.reshape(excel_cell_names, comparison.shape, order='F')
+excel_cell_names = pd.DataFrame(excel_cell_names)
+excel_cell_names.where(np.logical_not(comparison))
+
+if not(comparison.all()) :
+    logging.warning("Some cells do not match the template")
+    for number in range(0, nrows-1) :
+        if filled_composition_metadata.iloc[number, 0] != blank_composition_metadata.iloc[number, 0]:
+            logging.warning(f"""The excel cell {excel_cell_names.loc[number, 0]} has been corrupted and 
+                  should contain {blank_composition_metadata.iloc[number, 0]}""")
+          
+
+#Load Libraries required for Parts
+
+
 
 #Loop over all rows and find those where each block begins
 list_of_rows = []
@@ -39,8 +72,7 @@ for index, row in table.iterrows():
     else:
         names = table.iloc[index: index+6][0].tolist()
 
-
-
+#Extract part names from compositions
 all_parts = []
      
 for index, value in enumerate(list_of_rows):
@@ -53,9 +85,9 @@ for index, value in enumerate(list_of_rows):
         del compositions[value]
     else:
         compositions[value]['Parts'] = parts.tolist()
-        all_parts+=compositions[value]["Parts"] #turn into set to avoid duplicates after for loop
+        all_parts+=compositions[value]["Parts"]
         
-all_parts = set(all_parts)
+all_parts = set(all_parts) #set eliminates duplicates
     
 #for key, value in compositions.items():
 #    print(value["Parts"])

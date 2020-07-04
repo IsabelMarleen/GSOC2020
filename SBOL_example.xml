@@ -1,0 +1,29 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v2#">
+  <sbol:ComponentDefinition rdf:about="http://examples.org/ComponentDefinition/GFP/1">
+    <sbol:version>1</sbol:version>
+    <sbol:persistentIdentity rdf:resource="http://examples.org/ComponentDefinition/GFP"/>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:displayId>GFP</sbol:displayId>
+  </sbol:ComponentDefinition>
+  <sbol:Sequence rdf:about="http://examples.org/Sequence/GFP_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://examples.org/Sequence/GFP_seq"/>
+    <sbol:elements>atgcgtaaag gagaagaact tttcactgga gttgtcccaa ttcttgttga
+            attagatggt gatgttaatg ggcacaaatt ttctgtcagt ggagagggtg
+            aaggtgatgc aacatacgga aaacttaccc ttaaatttat ttgcactact
+            ggaaaactac ctgttccatg gccaacactt gtcactactt tcggttatgg
+            tgttcaatgc tttgcgagat acccagatca tatgaaacag catgactttt
+            tcaagagtgc catgcccgaa ggttatgtac aggaaagaac tatatttttc
+            aaagatgacg ggaactacaa gacacgtgct gaagtcaagt ttgaaggtga
+            tacccttgtt aatagaatcg agttaaaagg tattgatttt aaagaagatg
+            gaaacattct tggacacaaa ttggaataca actataactc acacaatgta
+            tacatcatgg cagacaaaca aaagaatgga atcaaagtta acttcaaaat
+            tagacacaac attgaagatg gaagcgttca actagcagac cattatcaac
+            aaaatactcc aattggcgat ggccctgtcc ttttaccaga caaccattac
+            ctgtccacac aatctgccct ttcgaaagat cccaacgaaa agagagacca
+            catggtcctt cttgagtttg taacagctgc tgggattaca catggcatgg
+            atgaactata caaataataa</sbol:elements>
+    <sbol:version>1</sbol:version>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+    <sbol:displayId>GFP_seq</sbol:displayId>
+  </sbol:Sequence>
+</rdf:RDF>

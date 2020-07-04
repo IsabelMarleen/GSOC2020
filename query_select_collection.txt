@@ -18,7 +18,7 @@ SELECT
 	?role
 WHERE {
   	?collect sbol:member ?comp .
-    filter (regex(?collect, library)) .
+    filter (regex(?collect, library_variable)) .
   	filter (regex(?role, 'http://identifiers.org/so/SO:')) .
 	?comp sbol:role ?role .  
 	?comp sbol:displayId ?displayId .

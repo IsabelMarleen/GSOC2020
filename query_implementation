@@ -10,12 +10,14 @@ Created on Tue Jun 30 17:12:23 2020
 import requests
 import json
 from pandas.io.json import json_normalize
+import pandas as pd
+import numpy as np
 
 instance = "https://synbiohub.org/"
 
-fl = open("query_select_collection.py", "r")
+fl = open("query_select_collection.txt", "r")
 sparqlquery = fl.read()
-sparqlquery = sparqlquery.replace("OFFSET 0", "OFFSET 1")
+sparqlquery = sparqlquery.replace("library_variable", "'https://synbiohub.org/public/igem/igem_collection/1'")
         
 
 r = requests.post(instance+"sparql", data = {"query":sparqlquery}, headers = {"Accept":"application/json"})
@@ -53,6 +55,8 @@ def sparqling(query_text, is_basic = True,
             break
         
     #create pandas data frame containing all page info
+    return(all_pages[0])
 
+result_df = sparqling(sparqlquery)
 
 

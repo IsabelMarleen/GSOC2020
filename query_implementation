@@ -9,7 +9,7 @@ Created on Tue Jun 30 17:12:23 2020
 
 import requests
 import json
-from pandas.io.json import json_normalize
+from pandas import json_normalize
 import pandas as pd
 import numpy as np
 from Composition_reading import libraries
@@ -29,7 +29,8 @@ def sparqling(query_text, libraries, is_basic = True,
         query_text = query_text.replace("library_variable", 
                         f"'{library}'")
         
-        r = requests.post(instance+"sparql", data = {"query":query_text}, headers = {"Accept":"application/json"})
+        r = requests.post(instance+"sparql", data = {"query":query_text}, 
+                          headers = {"Accept":"application/json"})
 
         d = json.loads(r.text)
         a = json_normalize(d['results']['bindings'])
@@ -59,7 +60,9 @@ def sparqling(query_text, libraries, is_basic = True,
                 break
         query_text = query_text.replace(f"'{library}'", 
                                              "library_variable")
+        
     #create pandas data frame containing all page info
+    print(pd.DataFrame(all_pages))
     return(all_pages)
 
 

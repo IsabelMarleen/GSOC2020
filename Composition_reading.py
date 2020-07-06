@@ -15,7 +15,8 @@ from col_to_excel import col_to_excel
 import sbol2
 from sbol2 import Document, Component, ComponentDefinition
 from sbol2 import BIOPAX_DNA, Sequence, SBOL_ENCODING_IUPAC
-from sbol2 import ModuleDefinition
+import Excel
+from Excel import doc
 
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
 path_filled = os.path.join(cwd, "darpa_template.xlsx")
@@ -54,6 +55,9 @@ if not(comparison.all()) :
           
 
 #Load Libraries required for Parts
+libraries = pd.read_excel(path_filled, sheet_name = sheet_name,
+                           header= None, nrows = 2, skiprows = 9, index_col=0)
+
 
 
 
@@ -94,8 +98,15 @@ all_parts = set(all_parts) #set eliminates duplicates
 
 
 #doc = Document()
-# template = ModuleDefinition('template')
-# template = template.assemble([])
-# template = template.assemble([GFP, tetR, M36010] )
-# doc.addModuleDefinition(template)
-# doc.GFP
+# composition_component = doc.componentDefinitions.create("composition_component")
+# composition_component.assemblePrimaryStructure([GFP, LacY], IGEM_STANDARD_ASSEMBLY)
+# for c in composition_component.getPrimaryStructure():
+#     print(cd.displayId)
+    
+# nucleotides = composition_component.compile()
+# print (nucleotides)
+# seq = composition_component.sequence
+# print(seq.elements)
+
+# composition_component.roles = [SO_GENE]
+

@@ -15,25 +15,30 @@ def evaluate():
 def run():
     data = request.get_json(force=True)
     
-    url = data['complete_sbol'].replace('/sbol','')
-    instance = data['instanceUrl']
-    uri = data['top_level']
+    files = data['manifest']['files']
+
     
     cwd = os.getcwd()
-    filename = os.path.join(cwd, "Test.html")
+    file_path = os.path.join(cwd, "Test.xml")
     
-    try:
-        with open(filename, 'r') as htmlfile:
-            result = htmlfile.read()
+    for file in files:
+        try:
+            file_url = file['url']
+            file_name = file['filename']
+            file_type = file['type']
             
-        #put in the url, uri, and instance given by synbiohub
-        result = result.replace("URL_REPLACE", url)
-        result = result.replace("URI_REPLACE", uri)
-        result = result.replace("INSTANCE_REPLACE", instance)
-           
-        result = result.replace("REQUEST_REPLACE", str(data))
+            with open(file_path, 'r') as xmlfile:
+                result = xmlfile.read()
+                
+            #put in the url, filename, and instance given by synbiohub
+            result = result.replace("TEST_FILE", file_name)
+            result = result.replace("REPLACE_FILENAME", file_name)
+            result = result.replace("REPLACE_FILETYPE", file_type)
+            result = result.replace("REPLACE_FILEURL", file_url)
             
-        return result
-    except Exception as e:
-        print(e)
-        abort(404)
+            result = result.replace("REQUEST_REPLACE", str(data))
+                
+            return result
+        except Exception as e:
+            print(e)
+            abort(404)

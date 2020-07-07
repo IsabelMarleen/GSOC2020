@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 <rdf:RDF xmlns:grn="urn:bbn.com:tasbe:grn/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbh="http://wiki.synbiohub.org/wiki/Terms/synbiohub#" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:annot="http://myannotation.org/" xmlns:synbiohub="http://synbiohub.org#" xmlns:prov="http://www.w3.org/ns/prov#">
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/TEST_FILE/1.0">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/TEST_FILE"/>
-    <sbol:displayId>TEST_FILE</sbol:displayId>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/file_name1/1.0">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/file_name1"/>
+    <sbol:displayId>file_name1</sbol:displayId>
     <sbol:version>1.0</sbol:version>
-	<sbh:mutableDescription>File name: REPLACE_FILENAME
-	File Type: REPLACE_FILETYPE
-	File URL: REPLACE_FILEURL
-	Data Sent: DATA_REPLACE</sbh:mutableDescription>
+	<sbh:mutableDescription>File name: file_name1
+	File Type: file_type1
+	File URL: file_url1
+	Data Sent: data1</sbh:mutableDescription>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
   </sbol:ComponentDefinition>

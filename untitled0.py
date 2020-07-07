@@ -6,10 +6,12 @@ Created on Tue Jul  7 14:54:07 2020
 """
 
 import os
+import shutil
+
 cwd = os.getcwd()
 file_path = os.path.join(cwd, "Test.xml")
 
-for i in range(0,2):
+for i in range(0,7):
 
     file_name = f'file_name{i}'
     file_type = f'file_type{i}'
@@ -32,4 +34,11 @@ for i in range(0,2):
     
     with open(file_path_out, 'w') as xmlfile:
         xmlfile.write(result)
-    
+        
+zip_path_in = os.path.join(cwd, "To_zip")
+zip_path_out = os.path.join(cwd, "Zip")
+shutil.make_archive(zip_path_out, 'zip', zip_path_in)
+
+
+shutil.rmtree(zip_path_in)
+os.makedirs(zip_path_in)

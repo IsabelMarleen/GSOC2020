@@ -67,7 +67,8 @@ compositions = dict()
 labels = np.array(["Collection Name:", "Name:", "Description:", "Strain (optional)",
           "Integration Locus (optional)", "Part Sequence:"])
 for index, row in table.iterrows():
-    comparison = np.asarray(table.iloc[index : index+6][0]) == labels
+    labs = np.asarray(table.iloc[index : index+6][0])
+    comparison = labs == labels
     if row[0] == "Collection Name:" and comparison.all() :
         list_of_rows.append(index)    
         compositions[index] = {"Collection Name": table.iloc[index][1],

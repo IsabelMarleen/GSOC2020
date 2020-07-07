@@ -11,14 +11,14 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX purl: <http://purl.obolibrary.org/obo/>
 
 SELECT
-	?collect
+	?library
 	?comp
 	?displayId
 	?title
 	?role
 WHERE {
-  	?collect sbol:member ?comp .
-    filter (regex(?collect, library_variable)) .
+  	?library sbol:member ?comp .
+    	filter (regex(?library, library_variable)) .
   	filter (regex(?role, 'http://identifiers.org/so/SO:')) .
 	?comp sbol:role ?role .  
 	?comp sbol:displayId ?displayId .
@@ -27,4 +27,4 @@ WHERE {
   }
 
 
-OFFSET 0 LIMIT 5
+OFFSET replacehere LIMIT 10000

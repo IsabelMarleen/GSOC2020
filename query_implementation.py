@@ -16,24 +16,23 @@ from Composition_reading import libraries
 
 instance = "https://synbiohub.org/"
 fl = open("query_select_collection.txt", "r")
-sparqlquery = fl.read()
-query_text = sparqlquery
+sparql_query = fl.read()
 
-def sparqling(query_text, libraries, is_basic = True, 
+def sparqling(sparql_query, libraries, is_basic = True, 
               no_sequence = False, progress = True):
     all_pages = []
 
     #loops over all pages and extracts query results
     for library in libraries:
 
-        query_text = query_text.replace("library_variable", 
+        query_text = sparql_query.replace("library_variable", 
                         f"'{library}'")
         
-        r = requests.post(instance+"sparql", data = {"query":query_text}, 
-                          headers = {"Accept":"application/json"})
+        #r = requests.post(instance+"sparql", data = {"query":query_text}, 
+        #                  headers = {"Accept":"application/json"})
 
-        d = json.loads(r.text)
-        a = json_normalize(d['results']['bindings'])
+        #d = json.loads(r.text)
+        #a = json_normalize(d['results']['bindings'])
 
         for i in range(0,2000):
             
@@ -58,12 +57,13 @@ def sparqling(query_text, libraries, is_basic = True,
             #if the page was no longer a full page stop loop
             if len(one_page)<10000:
                 break
-        query_text = query_text.replace(f"'{library}'", 
-                                             "library_variable")
+        # query_text = query_text.replace(f"'{library}'", 
+        #                                      "library_variable")
         
     #create pandas data frame containing all page info
-    print(pd.DataFrame(all_pages))
+    #print(pd.DataFrame(all_pages))
+    all_pages = pd.concat(all_pages)
     return(all_pages)
 
 
-result_df = sparqling(sparqlquery, list(libraries.loc["Libraries"].dropna()))
+result_df = sparqling(sparql_query, list(libraries.loc["Libraries"].dropna()))

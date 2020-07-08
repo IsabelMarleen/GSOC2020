@@ -1,4 +1,4 @@
-from flask import Flask, request, abort, send_file
+from flask import Flask, request, abort, send_file, jsonify
 import os, shutil
 
 app = Flask(__name__)
@@ -49,7 +49,7 @@ def evaluate():
             "filename": file_name,
             "requirement": useableness})
        
-    return eval_response_manifest
+    return jsonify(eval_response_manifest)
 
 
 

@@ -94,14 +94,16 @@ def run():
             result = result.replace("DATA_REPLACE", str(run_manifest))
             ################## END SECTION ####################################
             
-            # with open(file_path_out, 'w') as xmlfile:
-            #     xmlfile.write(result)
+            with open(file_path_out, 'w') as xmlfile:
+                xmlfile.write(result)
             
             #add name of converted file to manifest
             # run_response_manifest["results"].append({"filename":converted_file_name,
             #                             "sources":[file_name]})
+                
             file_list = glob.glob(os.path.join(cwd, '*'))
-            return_str = str(cwd)+", "+str(file_list)
+            file_list2 = glob.glob(os.path.join(zip_path_in, '*'))
+            return_str = str(cwd)+", "+str(file_list)+", "+str(file_list2)
             return (return_str)
         except Exception as e:
             print(e)

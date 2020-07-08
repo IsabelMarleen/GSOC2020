@@ -1,5 +1,5 @@
 from flask import Flask, request, abort, send_file, jsonify
-import os, shutil
+import os, shutil, glob
 
 app = Flask(__name__)
 
@@ -89,13 +89,14 @@ def run():
             result = result.replace("DATA_REPLACE", str(run_manifest))
             ################## END SECTION ####################################
             
-            with open(file_path_out, 'w') as xmlfile:
-                xmlfile.write(result)
+            # with open(file_path_out, 'w') as xmlfile:
+            #     xmlfile.write(result)
             
             #add name of converted file to manifest
-            # run_response_manifest["results"].append({"filename":converted_file_name,
-            #                             "sources":[file_name]})
-            return (file_name)
+            run_response_manifest["results"].append({"filename":converted_file_name,
+                                        "sources":[file_name]})
+            file_list = glob.glob(os.path.join(cwd, '*'))
+            return (cwd, file_list)
         except Exception as e:
             print(e)
             abort(415)

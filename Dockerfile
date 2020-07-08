@@ -16,4 +16,4 @@ RUN pip3 install -r requirements.txt
 
 ENV FLASK_APP=app.py
 
-CMD ["waitress-serve", "--port=8080", "app:app" ]
+CMD ["waitress-serve", "--port=5000", "app:app" ]

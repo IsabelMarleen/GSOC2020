@@ -1,0 +1,147 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:sbh="http://wiki.synbiohub.org/wiki/Terms/synbiohub#" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:ns0="http://purl.obolibrary.org/obo/" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:om="http://www.ontology-of-units-of-measure.org/resource/om-2/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sbol:ComponentDefinition rdf:about="https://synbiohub.org/user/isabelmarleen/TestCollection/GFP/1">
+    <sbh:ownedBy rdf:resource="https://synbiohub.org/user/isabelmarleen"/>
+    <dcterms:description>green fluorescent protein derived from jellyfish Aequeora victoria wild-type GFP (SwissProt: P42212</dcterms:description>
+    <dcterms:title>GFP</dcterms:title>
+    <sbol:displayId>GFP</sbol:displayId>
+    <sbol:persistentIdentity rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/GFP"/>
+    <sbh:topLevel rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/GFP/1"/>
+    <sbol:version>1</sbol:version>
+    <sbol:sequence rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/GFP_sequence/1"/>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+  </sbol:ComponentDefinition>
+  <sbol:Sequence rdf:about="https://synbiohub.org/user/isabelmarleen/TestCollection/M36010_sequence/1">
+    <sbol:version>1</sbol:version>
+    <sbol:elements>tcggtcagtttcacctgatttacgtaaaaacccgcttcggcgggtttttgcttttggaggggcagaaagatgaatgactgtc</sbol:elements>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+    <sbol:persistentIdentity rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/M36010_sequence"/>
+    <sbh:topLevel rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/M36010_sequence/1"/>
+    <sbh:ownedBy rdf:resource="https://synbiohub.org/user/isabelmarleen"/>
+    <sbol:displayId>M36010_sequence</sbol:displayId>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="https://synbiohub.org/user/isabelmarleen/TestCollection/pT7_sequence/1">
+    <sbol:persistentIdentity rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/pT7_sequence"/>
+    <sbh:topLevel rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/pT7_sequence/1"/>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+    <sbol:version>1</sbol:version>
+    <sbh:ownedBy rdf:resource="https://synbiohub.org/user/isabelmarleen"/>
+    <sbol:displayId>pT7_sequence</sbol:displayId>
+    <sbol:elements>taatacgactcactatagggaga</sbol:elements>
+  </sbol:Sequence>
+  <sbol:ComponentDefinition rdf:about="http://sys-bio.org/ComponentDefinition/my_device/1">
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:persistentIdentity rdf:resource="http://sys-bio.org/ComponentDefinition/my_device"/>
+    <sbol:version>1</sbol:version>
+    <sbol:displayId>my_device</sbol:displayId>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="https://synbiohub.org/user/isabelmarleen/TestCollection/M36010/1">
+    <sbol:version>1</sbol:version>
+    <dcterms:description>E. coli RNA pol transcription terminator designed and tested by Guillaume Cambray at BIOFAB Emeryville. Based on the natural E. coli rnpB T1 terminator.</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:displayId>M36010</sbol:displayId>
+    <sbh:topLevel rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/M36010/1"/>
+    <sbh:ownedBy rdf:resource="https://synbiohub.org/user/isabelmarleen"/>
+    <sbol:sequence rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/M36010_sequence/1"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
+    <sbol:persistentIdentity rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/M36010"/>
+    <dcterms:title>M36010</dcterms:title>
+  </sbol:ComponentDefinition>
+  <sbol:Sequence rdf:about="https://synbiohub.org/user/isabelmarleen/TestCollection/Lac_Y_sequence/1">
+    <sbh:ownedBy rdf:resource="https://synbiohub.org/user/isabelmarleen"/>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+    <sbol:version>1</sbol:version>
+    <sbol:displayId>Lac_Y_sequence</sbol:displayId>
+    <sbol:elements>atgtctgcccgtatttcgcgtaaggaaatccattatgtactatttaaaaaacacaaacttttggatgttcggtttattctttttcttttacttttttatcatgggagcctacttcccgtttttcccgatttggctacatgacatcaaccatatcagcaaaagtgatacgggtattatttttgccgctatttctctgttctcgctattattccaaccgctgtttggtctgctttctgacaaactcgggctgcgcaaatacctgctgtggattattaccggcatgttagtgatgtttgcgccgttctttatttttatcttcgggccactgttacaatacaacattttagtaggatcgattgttggtggtatttatctaggcttttgttttaacgccggtgcgccagcagtagaggcatttattgagaaagtcagccgtcgcagtaatttcgaatttggtcgcgcgcggatgtttggctgtgttggctgggcgctgtgtgcctcgattgtcggcatcatgttcaccatcaataatcagtttgttttctggctgggctctggctgtgcactcatcctcgccgttttactctttttcgccaaaacggatgcgccctcttctgccacggttgccaatgcggtaggtgccaaccattcggcatttagccttaagctggcactggaactgttcagacagccaaaactgtggtttttgtcactgtatgttattggcgtttcctgcacctacgatgtttttgaccaacagtttgctaatttctttacttcgttctttgctaccggtgaacagggtacgcgggtatttggctacgtaacgacaatgggcgaattacttaacgcctcgattatgttctttgcgccactgatcattaatcgcatcggtgggaaaaacgccctgctgctggctggcactattatgtctgtacgtattattggctcatcgttcgccacctcagcgctggaagtggttattctgaaaacgctgcatatgtttgaagtaccgttcctgctggtgggctgctttaaatatattaccagccagtttgaagtgcgtttttcagcgacgatttatctggtctgtttctgcttctttaagcaactggcgatgatttttatgtctgtactggcgggcaatatgtatgaaagcatcggtttccagggcgcttatctggtgctgggtctggtggcgctgggcttcaccttaatttccgtgttcacgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaagtcgcttaa</sbol:elements>
+    <sbh:topLevel rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/Lac_Y_sequence/1"/>
+    <sbol:persistentIdentity rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/Lac_Y_sequence"/>
+  </sbol:Sequence>
+  <sbol:ComponentDefinition rdf:about="https://synbiohub.org/user/isabelmarleen/TestCollection/tetR/1">
+    <sbh:topLevel rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/tetR/1"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+    <sbol:persistentIdentity rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/tetR"/>
+    <sbh:ownedBy rdf:resource="https://synbiohub.org/user/isabelmarleen"/>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:displayId>tetR</sbol:displayId>
+    <dcterms:title>tetR</dcterms:title>
+    <sbol:sequence rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/tetR_sequence/1"/>
+    <sbol:version>1</sbol:version>
+    <dcterms:description>Coding region for the TetR protein without the Ribosome Binding Site. Modified with an LVA tail for rapid degradation of the protein and faster fall time for the emission. TetR binds to the pTet regulator (BBa_R0040). aTc (anhydrotetracycline) binds to TetR and inhibits its operation.</dcterms:description>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="https://synbiohub.org/user/isabelmarleen/TestCollection/Lac_Y/1">
+    <sbol:displayId>Lac_Y</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:persistentIdentity rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/Lac_Y"/>
+    <sbol:sequence rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/Lac_Y_sequence/1"/>
+    <dcterms:title>Lac_Y</dcterms:title>
+    <sbh:topLevel rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/Lac_Y/1"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+    <dcterms:description>Lactose transport receptor</dcterms:description>
+    <sbh:ownedBy rdf:resource="https://synbiohub.org/user/isabelmarleen"/>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="https://synbiohub.org/user/isabelmarleen/TestCollection/pT7/1">
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:persistentIdentity rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/pT7"/>
+    <dcterms:title>pT7</dcterms:title>
+    <sbol:displayId>pT7</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
+    <dcterms:description>Just a T7 Promoter</dcterms:description>
+    <sbh:ownedBy rdf:resource="https://synbiohub.org/user/isabelmarleen"/>
+    <sbol:sequence rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/pT7_sequence/1"/>
+    <sbh:topLevel rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/pT7/1"/>
+  </sbol:ComponentDefinition>
+  <sbol:Sequence rdf:about="https://synbiohub.org/user/isabelmarleen/TestCollection/tetR_sequence/1">
+    <sbol:elements>atgtccagattagataaaagtaaagtgattaacagcgcattagagctgcttaatgaggtcggaatcgaaggtttaacaacccgtaaactcgcccagaagctaggtgtagagcagcctacattgtattggcatgtaaaaaataagcgggctttgctcgacgccttagccattgagatgttagataggcaccatactcacttttgccctttagaaggggaaagctggcaagattttttacgtaataacgctaaaagttttagatgtgctttactaagtcatcgcgatggagcaaaagtacatttaggtacacggcctacagaaaaacagtatgaaactctcgaaaatcaattagcctttttatgccaacaaggtttttcactagagaatgcattatatgcactcagcgctgtggggcattttactttaggttgcgtattggaagatcaagagcatcaagtcgctaaagaagaaagggaaacacctactactgatagtatgccgccattattacgacaagctatcgaattatttgatcaccaaggtgcagagccagccttcttattcggccttgaattgatcatatgcggattagaaaaacaacttaaatgtgaaagtgggtccgctgcaaacgacgaaaactacgctttagtagcttaataacactgatagtgctagtgtagatcac</sbol:elements>
+    <sbh:topLevel rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/tetR_sequence/1"/>
+    <sbol:displayId>tetR_sequence</sbol:displayId>
+    <sbol:persistentIdentity rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/tetR_sequence"/>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+    <sbol:version>1</sbol:version>
+    <sbh:ownedBy rdf:resource="https://synbiohub.org/user/isabelmarleen"/>
+  </sbol:Sequence>
+  <sbol:Collection rdf:about="https://synbiohub.org/user/isabelmarleen/TestCollection/TestCollection_collection/1">
+    <dcterms:created>2020-06-19T08:55:50.861Z</dcterms:created>
+    <dcterms:created>2020-06-19T09:06:16.968Z</dcterms:created>
+    <sbol:member rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/GFP_sequence/1"/>
+    <sbol:member rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/pT7_sequence/1"/>
+    <sbh:topLevel rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/TestCollection_collection/1"/>
+    <dcterms:description>Test Collection for Spreadsheet Submit Plugin</dcterms:description>
+    <dcterms:created>2020-06-19T09:04:48.094Z</dcterms:created>
+    <dcterms:created>2020-06-19T09:07:19.820Z</dcterms:created>
+    <sbol:version>1</sbol:version>
+    <dcterms:title>Test Collection</dcterms:title>
+    <dcterms:created>2020-06-21T12:36:47.808Z</dcterms:created>
+    <dcterms:created>2020-06-19T08:50:36.004Z</dcterms:created>
+    <dcterms:created>2020-06-16T14:24:50.550Z</dcterms:created>
+    <dcterms:created>2020-06-30T09:35:11.198Z</dcterms:created>
+    <dcterms:created>2020-06-15T11:26:17.211Z</dcterms:created>
+    <ns0:OBI_0001617>[]</ns0:OBI_0001617>
+    <sbol:member rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/Lac_Y_sequence/1"/>
+    <sbh:ownedBy rdf:resource="https://synbiohub.org/user/isabelmarleen"/>
+    <dcterms:created>2020-06-15T13:11:27.876Z</dcterms:created>
+    <sbol:member rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/M36010_sequence/1"/>
+    <sbol:member rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/GFP/1"/>
+    <sbol:member rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/Lac_Y/1"/>
+    <dcterms:created>2020-06-15T13:23:04.561Z</dcterms:created>
+    <dc:creator>Isabel P&#246;tzsch</dc:creator>
+    <sbol:member rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/tetR_sequence/1"/>
+    <dcterms:created>2020-06-15T13:10:07.555Z</dcterms:created>
+    <sbol:member rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/M36010/1"/>
+    <sbol:persistentIdentity rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/TestCollection_collection"/>
+    <sbol:displayId>TestCollection_collection</sbol:displayId>
+    <dcterms:created>2020-07-04T11:23:50.167Z</dcterms:created>
+    <sbol:member rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/pT7/1"/>
+    <sbol:member rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/tetR/1"/>
+  </sbol:Collection>
+  <sbol:Sequence rdf:about="https://synbiohub.org/user/isabelmarleen/TestCollection/GFP_sequence/1">
+    <sbol:displayId>GFP_sequence</sbol:displayId>
+    <sbol:persistentIdentity rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/GFP_sequence"/>
+    <sbol:version>1</sbol:version>
+    <sbh:topLevel rdf:resource="https://synbiohub.org/user/isabelmarleen/TestCollection/GFP_sequence/1"/>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+    <sbh:ownedBy rdf:resource="https://synbiohub.org/user/isabelmarleen"/>
+    <sbol:elements>atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagaccacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa</sbol:elements>
+  </sbol:Sequence>
+</rdf:RDF>

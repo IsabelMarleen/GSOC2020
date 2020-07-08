@@ -19,14 +19,14 @@ cwd = os.path.dirname(os.path.abspath("__file__")) #get current working director
 path_parts = os.path.join(cwd, "TestCollection_collection.xml")
 doc.read(path_parts)
 
-# Inspect the Document
-for obj in doc:
-    print(obj.displayId, obj.type)
+# # Inspect the Document
+# for obj in doc:
+#     print(obj.displayId, obj.type)
     
 
-# Import the medium strength device into your document
-for cd in doc.componentDefinitions:
-    print(cd)
+# # Import the medium strength device into your document
+# for cd in doc.componentDefinitions:
+#     print(cd)
     
     
     
@@ -44,27 +44,30 @@ my_device = doc.componentDefinitions.create('my_device')
 my_device.assemblePrimaryStructure([promoter, cds], sbol2.IGEM_STANDARD_ASSEMBLY)
 
 
-# Inspect the primary structure
-for cd in my_device.getPrimaryStructure():
-    print(cd.displayId)
+# # Inspect the primary structure
+# for cd in my_device.getPrimaryStructure():
+#     print(cd.displayId)
     
     
     
     
-# Compile the sequence for the new device
-nucleotides = my_device.compile()
-seq = my_device.sequence
-print(seq.elements)
+# # Compile the sequence for the new device
+# nucleotides = my_device.compile()
+# seq = my_device.sequence
+# # print(seq.elements)
 
 
 
-# Set the role of the device with the Sequence Ontology term `gene`
-my_device.roles = [sbol2.SO_GENE]
+# # Set the role of the device with the Sequence Ontology term `gene`
+# my_device.roles = [sbol2.SO_GENE]
 
 
-print(my_device.roles)
+# # print(my_device.roles)
 
-my_device.roles = [sbol2.SO + '0000444']
+# my_device.roles = [sbol2.SO + '0000444']
 
-my_device.roles
+# my_device.roles
 
+#Export
+# print(doc)
+doc.write('SBOL_composites_example.xml')

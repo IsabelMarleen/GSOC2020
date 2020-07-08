@@ -97,14 +97,14 @@ def run():
             with open(file_path_out, 'w') as xmlfile:
                 xmlfile.write(result)
             
-            #add name of converted file to manifest
-            # run_response_manifest["results"].append({"filename":converted_file_name,
-            #                             "sources":[file_name]})
+            # add name of converted file to manifest
+            run_response_manifest["results"].append({"filename":converted_file_name,
+                                        "sources":[file_name]})
                 
-            file_list = glob.glob(os.path.join(cwd, '*'))
-            file_list2 = glob.glob(os.path.join(zip_path_in, '*'))
-            return_str = str(cwd)+", "+str(file_list)+", "+str(file_list2)
-            return (return_str)
+            # file_list = glob.glob(os.path.join(cwd, '*'))
+            # file_list2 = glob.glob(os.path.join(zip_path_in, '*'))
+            # return_str = str(cwd)+", "+str(file_list)+", "+str(file_list2)
+            return (str(run_response_manifest))
         except Exception as e:
             print(e)
             abort(415)

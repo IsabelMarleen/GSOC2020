@@ -15,7 +15,6 @@ def evaluate():
     #https://bioportal.bioontology.org/ontologies/EDAM?p=classes
     
     eval_manifest = request.get_json(force=True)
-    print(eval_manifest)
     files = eval_manifest['manifest']['files']
     
     eval_response_manifest = {"manifest":[]}
@@ -51,7 +50,6 @@ def evaluate():
             "requirement": useableness})
        
     return jsonify(eval_response_manifest)
-
 
 
 @app.route("/run", methods=["POST"])

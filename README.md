@@ -7,7 +7,7 @@ Run `docker run --publish 8087:5000 --detach --name submit-plug synbiohub/plugin
 Check it is up using localhost:8087.
 
 ## Using Python
-Run pip install -r requirements.txt to install the requirements. Then run FLASK_APP=app python -m flask run. A flask module will run at localhost:5000/.
+Run pip install -r requirements.txt to install the requirements. Then run FLASK_APP=app python -m flask run. A flask module will run at http:/localhost:5000/.
 
 # Testing
 To create a test manifest use:

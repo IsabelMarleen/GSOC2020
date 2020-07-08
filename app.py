@@ -124,8 +124,8 @@ def run():
     file_list = glob.glob(os.path.join(cwd, '*'))
     file_list2 = glob.glob(os.path.join(zip_path_in, '*'))
     return_str = str(cwd)+", "+str(file_list)+", "+str(file_list2)
-    return(return_str)
+    # return(return_str)
     
-    # return send_file(f"{zip_path_out}.zip")
+    return send_file(f"{zip_path_out}.zip")
     
-    # os.remove(f"{zip_path_out}.zip")
+    os.remove(f"{zip_path_out}.zip")

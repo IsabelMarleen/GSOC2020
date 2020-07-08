@@ -11,9 +11,15 @@ Run pip install -r requirements.txt to install the requirements. Then run FLASK_
 
 # Testing
 To create a test manifest use:
+
 `run_manifest = {"manifest":[]}`
+
 `for i in range(0,7):`
+
 `    file_name = f'file_name{i}'`
+
 `    file_type = f'file_type{i}'`
+
 `    file_url = f'file_url{i}'`
+
 `    run_manifest['manifest'].append({"url":file_url, "filename":file_name, "edam":file_type})`

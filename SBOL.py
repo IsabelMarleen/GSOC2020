@@ -1,6 +1,5 @@
 #Setup
 import sbol2
-from sbol2 import Document
 from sbol2 import *
 
 
@@ -43,21 +42,31 @@ aatatattaccagccagtttgaagtgcgtttttcagcgacgatttatctggtctgtttctgcttctttaagcaactggcg
 tatgtctgtactggcgggcaatatgtatgaaagcatcggtttccagggcgcttatctggtgctgggtctggtggcgctgggcttcacc
 ttaatttccgtgttcacgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaagtcgcttaa"""
 
-LacY_seq = Sequence('Lac_seq', sequence2, SBOL_ENCODING_IUPAC)
+LacY_seq = Sequence('LacY_seq', sequence2, SBOL_ENCODING_IUPAC)
 doc.addSequence(LacY_seq)
+
+
+promoter = doc.componentDefinitions['GFP']
+cds = doc.componentDefinitions['LacY']
+
 
 #Composition
 composition_component = doc.componentDefinitions.create("composition_component")
-composition_component.assemblePrimaryStructure(['https://synbiohub.org/public/igem/BBa_K1499503/1', 'https://synbiohub.org/public/igem/BBa_K1499503/1'])
+#composition_component.assemblePrimaryStructure(['https://synbiohub.org/public/igem/BBa_K1499503/1', 'https://synbiohub.org/public/igem/BBa_K1499503/1'])
+composition_component.assemblePrimaryStructure([promoter, cds])
 for cd in composition_component.getPrimaryStructure():
     print(cd.displayId)
     
-# nucleotides = composition_component.compile()
-# print (nucleotides)
-# seq = composition_component.sequence
-# print(seq.elements)
+nucleotides = composition_component.compile()
+print (nucleotides)
+seq = composition_component.sequence
+print(seq.elements)
 
-# composition_component.roles = [SO_GENE]
+composition_component.roles = [SO_GENE]
 
 #Export
 doc.write('SBOL_example.xml')
+
+
+
+

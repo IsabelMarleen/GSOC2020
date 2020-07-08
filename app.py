@@ -93,10 +93,11 @@ def run():
             #     xmlfile.write(result)
             
             #add name of converted file to manifest
-            run_response_manifest["results"].append({"filename":converted_file_name,
-                                        "sources":[file_name]})
+            # run_response_manifest["results"].append({"filename":converted_file_name,
+            #                             "sources":[file_name]})
             file_list = glob.glob(os.path.join(cwd, '*'))
-            return (cwd, file_list)
+            return_str = str(cwd)+", "+str(file_list)
+            return (return_str)
         except Exception as e:
             print(e)
             abort(415)

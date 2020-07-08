@@ -76,25 +76,25 @@ def run():
             converted_file_name = f"{file_name}.converted"
             file_path_out = os.path.join(cwd, "To_zip", converted_file_name)
         
-    #         ########## REPLACE THIS SECTION WITH OWN RUN CODE #################
-    #         with open(file_path, 'r') as xmlfile:
-    #             result = xmlfile.read()
+            ########## REPLACE THIS SECTION WITH OWN RUN CODE #################
+            with open(file_path, 'r') as xmlfile:
+                result = xmlfile.read()
                             
-    #         #put in the url, filename, and instance given by synbiohub
-    #         result = result.replace("TEST_FILE", file_name)
-    #         result = result.replace("REPLACE_FILENAME", file_name)
-    #         result = result.replace("REPLACE_FILETYPE", file_type)
-    #         result = result.replace("REPLACE_FILEURL", file_url)
-    #         result = result.replace("FILE_DATA_REPLACE", str(data))
-    #         result = result.replace("DATA_REPLACE", str(run_manifest))
-    #         ################## END SECTION ####################################
+            #put in the url, filename, and instance given by synbiohub
+            result = result.replace("TEST_FILE", file_name)
+            result = result.replace("REPLACE_FILENAME", file_name)
+            result = result.replace("REPLACE_FILETYPE", file_type)
+            result = result.replace("REPLACE_FILEURL", file_url)
+            result = result.replace("FILE_DATA_REPLACE", str(data))
+            result = result.replace("DATA_REPLACE", str(run_manifest))
+            ################## END SECTION ####################################
             
-    #         with open(file_path_out, 'w') as xmlfile:
-    #             xmlfile.write(result)
+            with open(file_path_out, 'w') as xmlfile:
+                xmlfile.write(result)
             
-    #         #add name of converted file to manifest
-    #         run_response_manifest["results"].append({"filename":converted_file_name,
-    #                                     "sources":[file_name]})
+            #add name of converted file to manifest
+            run_response_manifest["results"].append({"filename":converted_file_name,
+                                        "sources":[file_name]})
             return (file_name)
         except Exception as e:
             print(e)

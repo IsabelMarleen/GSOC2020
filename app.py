@@ -67,15 +67,14 @@ def run():
     #files = data['manifest']['files']
     
     for file in files:
-        return(str(file))
-    #     try:
-    #         file_name = file['filename']
-    #         file_type = file['edam']
-    #         file_url = file['url']
-    #         data = str(file)
+        try:
+            file_name = file['filename']
+            file_type = file['edam']
+            file_url = file['url']
+            data = str(file)
            
-    #         converted_file_name = f"{file_name}.converted"
-    #         file_path_out = os.path.join(cwd, "To_zip", converted_file_name )
+            converted_file_name = f"{file_name}.converted"
+            file_path_out = os.path.join(cwd, "To_zip", converted_file_name)
         
     #         ########## REPLACE THIS SECTION WITH OWN RUN CODE #################
     #         with open(file_path, 'r') as xmlfile:
@@ -96,10 +95,10 @@ def run():
     #         #add name of converted file to manifest
     #         run_response_manifest["results"].append({"filename":converted_file_name,
     #                                     "sources":[file_name]})
-            
-    #     except Exception as e:
-    #         print(e)
-    #         abort(415)
+            return (file_name)
+        except Exception as e:
+            print(e)
+            abort(415)
             
     # #create manifest file
     # file_path_out = os.path.join(cwd, "To_zip", "manifest.json")

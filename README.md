@@ -10,7 +10,7 @@ Check it is up using http://localhost:8087/status.
 Run pip install -r requirements.txt to install the requirements. Then run FLASK_APP=app python -m flask run. A flask module will run at http://localhost:5000/.
 
 # Testing
-To create a test manifest use:
+To create a test manifest use (note that quotes must use " for postman):
 
 ```
 run_manifest = {"manifest":[]}
@@ -20,3 +20,14 @@ for i in range(0,7):
   file_url = f'file_url{i}'
   run_manifest['manifest'].append({"url":file_url, "filename":file_name, "edam":file_type})
 ```
+Example manifest:
+```
+{"manifest": {"files":[
+  {"url": "file_url0", "filename": "file_name0", "edam": "file_type0"},
+  {"url": "file_url1", "filename": "file_name1", "edam": "file_type1"},
+  {"url": "file_url2", "filename": "file_name2", "edam": "file_type2"},
+  {"url": "file_url3", "filename": "file_name3", "edam": "file_type3"},
+  {"url": "file_url4", "filename": "file_name4", "edam": "file_type4"},
+  {"url": "file_url5", "filename": "file_name5", "edam": "file_type5"},
+  {"url": "file_url6", "filename": "file_name6", "edam": "file_type6"}]}}
+  ```

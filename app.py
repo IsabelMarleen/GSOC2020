@@ -79,7 +79,7 @@ def run():
             data = str(file)
            
             converted_file_name = f"{file_name}.converted"
-            file_path_out = os.path.join(cwd, "To_zip", converted_file_name)
+            file_path_out = os.path.join(zip_path_in, converted_file_name)
         
             ########## REPLACE THIS SECTION WITH OWN RUN CODE #################
             with open(file_path, 'r') as xmlfile:
@@ -104,24 +104,27 @@ def run():
             # file_list = glob.glob(os.path.join(cwd, '*'))
             # file_list2 = glob.glob(os.path.join(zip_path_in, '*'))
             # return_str = str(cwd)+", "+str(file_list)+", "+str(file_list2)
-            return (str(run_response_manifest))
         except Exception as e:
             print(e)
             abort(415)
             
-    # #create manifest file
-    # file_path_out = os.path.join(cwd, "To_zip", "manifest.json")
-    # with open(file_path_out, 'w') as manifest_file:
-    #         manifest_file.write(str(run_response_manifest)) 
+    #create manifest file
+    file_path_out = os.path.join(zip_path_in, "manifest.json")
+    with open(file_path_out, 'w') as manifest_file:
+            manifest_file.write(str(run_response_manifest)) 
         
-    # #create zip file of converted files and manifest
+    #create zip file of converted files and manifest
     # zip_path_in = os.path.join(cwd, "To_zip")
     # zip_path_out = os.path.join(cwd, "Zip")
-    # shutil.make_archive(zip_path_out, 'zip', zip_path_in)
+    shutil.make_archive(zip_path_out, 'zip', zip_path_in)
     
-    # #clear To_zip directory
-    # shutil.rmtree(zip_path_in)
+    #clear To_zip directory
+    shutil.rmtree(zip_path_in)
     
+    file_list = glob.glob(os.path.join(cwd, '*'))
+    file_list2 = glob.glob(os.path.join(zip_path_in, '*'))
+    return_str = str(cwd)+", "+str(file_list)+", "+str(file_list2)
+    return(return_str)
     
     # return send_file(f"{zip_path_out}.zip")
     

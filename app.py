@@ -58,18 +58,20 @@ def run():
     
     zip_path_in = os.path.join(cwd, "To_zip")
     zip_path_out = os.path.join(cwd, "Zip")
+    
+    #make to zip directory
     os.makedirs(zip_path_in)
     
+    #take in run manifest
     run_manifest = request.get_json(force=True)
-    
-    #run_manifest = request.json['manifest']['files']
     files = run_manifest['manifest']['files']
     
-    
+    #Remove this line if not needed
     file_path = os.path.join(cwd, "Test.xml")
+    
+    #initiate response manifest
     run_response_manifest = {"results":[]}
     
-    #files = data['manifest']['files']
     
     for file in files:
         try:
@@ -82,6 +84,7 @@ def run():
             file_path_out = os.path.join(zip_path_in, converted_file_name)
         
             ########## REPLACE THIS SECTION WITH OWN RUN CODE #################
+            #read in Test.xml
             with open(file_path, 'r') as xmlfile:
                 result = xmlfile.read()
                             
@@ -94,16 +97,14 @@ def run():
             result = result.replace("DATA_REPLACE", str(run_manifest))
             ################## END SECTION ####################################
             
+            #write out result to "To_zip" file
             with open(file_path_out, 'w') as xmlfile:
                 xmlfile.write(result)
             
             # add name of converted file to manifest
             run_response_manifest["results"].append({"filename":converted_file_name,
                                         "sources":[file_name]})
-                
-            # file_list = glob.glob(os.path.join(cwd, '*'))
-            # file_list2 = glob.glob(os.path.join(zip_path_in, '*'))
-            # return_str = str(cwd)+", "+str(file_list)+", "+str(file_list2)
+            
         except Exception as e:
             print(e)
             abort(415)
@@ -114,18 +115,12 @@ def run():
             manifest_file.write(str(run_response_manifest)) 
         
     #create zip file of converted files and manifest
-    # zip_path_in = os.path.join(cwd, "To_zip")
-    # zip_path_out = os.path.join(cwd, "Zip")
     shutil.make_archive(zip_path_out, 'zip', zip_path_in)
     
     #clear To_zip directory
     shutil.rmtree(zip_path_in)
     
-    file_list = glob.glob(os.path.join(cwd, '*'))
-    file_list2 = glob.glob(os.path.join(zip_path_in, '*'))
-    return_str = str(cwd)+", "+str(file_list)+", "+str(file_list2)
-    # return(return_str)
-    
     return send_file(f"{zip_path_out}.zip")
     
+    #delete zip file
     os.remove(f"{zip_path_out}.zip")

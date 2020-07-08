@@ -16,4 +16,4 @@ RUN pip3 install -r requirements.txt
 
 ENV FLASK_APP=app.py
 
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["waitress-serve", "--port=8080", "app:app" ]

@@ -89,10 +89,10 @@ def run():
             result = result.replace("DATA_REPLACE", str(run_manifest))
             ################## END SECTION ####################################
             
-            # with open(file_path_out, 'w') as xmlfile:
-            #     xmlfile.write(result)
+            with open(file_path_out, 'w') as xmlfile:
+                xmlfile.write(result)
             
-            # #add name of converted file to manifest
+            #add name of converted file to manifest
             # run_response_manifest["results"].append({"filename":converted_file_name,
             #                             "sources":[file_name]})
             return (file_name)

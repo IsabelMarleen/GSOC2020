@@ -21,6 +21,7 @@ for i in range(0,7):
   run_manifest['manifest'].append({"url":file_url, "filename":file_name, "edam":file_type})
 ```
 Example manifest:
+```
 {"manifest": {"files":[
   {"url": "file_url0", "filename": "file_name0", "edam": "file_type0"},
   {"url": "file_url1", "filename": "file_name1", "edam": "file_type1"},
@@ -29,3 +30,4 @@ Example manifest:
   {"url": "file_url4", "filename": "file_name4", "edam": "file_type4"},
   {"url": "file_url5", "filename": "file_name5", "edam": "file_type5"},
   {"url": "file_url6", "filename": "file_name6", "edam": "file_type6"}]}}
+  ```

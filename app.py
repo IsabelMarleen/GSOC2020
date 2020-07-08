@@ -54,22 +54,17 @@ def evaluate():
 
 @app.route("/run", methods=["POST"])
 def run():
-    cwd = os.getcwd()
     
     run_manifest = request.get_json(force=True)
     
     #run_manifest = request.json['manifest']['files']
     files = run_manifest['manifest']['files']
     
-    
+    cwd = os.getcwd()
     file_path = os.path.join(cwd, "Test.xml")
     run_response_manifest = {"results":[]}
     
     #files = data['manifest']['files']
-
-    
-    cwd = os.getcwd()
-    file_path = os.path.join(cwd, "Test.xml")
     
     for file in files:
         try:

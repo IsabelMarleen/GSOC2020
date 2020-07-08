@@ -80,13 +80,13 @@ def run():
             with open(file_path, 'r') as xmlfile:
                 result = xmlfile.read()
                             
-            # #put in the url, filename, and instance given by synbiohub
-            # result = result.replace("TEST_FILE", file_name)
-            # result = result.replace("REPLACE_FILENAME", file_name)
-            # result = result.replace("REPLACE_FILETYPE", file_type)
-            # result = result.replace("REPLACE_FILEURL", file_url)
-            # result = result.replace("FILE_DATA_REPLACE", str(data))
-            # result = result.replace("DATA_REPLACE", str(run_manifest))
+            #put in the url, filename, and instance given by synbiohub
+            result = result.replace("TEST_FILE", file_name)
+            result = result.replace("REPLACE_FILENAME", file_name)
+            result = result.replace("REPLACE_FILETYPE", file_type)
+            result = result.replace("REPLACE_FILEURL", file_url)
+            result = result.replace("FILE_DATA_REPLACE", data)
+            result = result.replace("DATA_REPLACE", str(run_manifest))
             ################## END SECTION ####################################
             
             # with open(file_path_out, 'w') as xmlfile:

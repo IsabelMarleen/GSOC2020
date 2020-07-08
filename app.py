@@ -54,13 +54,18 @@ def evaluate():
 
 @app.route("/run", methods=["POST"])
 def run():
+    cwd = os.getcwd()
+    
+    zip_path_in = os.path.join(cwd, "To_zip")
+    zip_path_out = os.path.join(cwd, "Zip")
+    os.makedirs(zip_path_in)
     
     run_manifest = request.get_json(force=True)
     
     #run_manifest = request.json['manifest']['files']
     files = run_manifest['manifest']['files']
     
-    cwd = os.getcwd()
+    
     file_path = os.path.join(cwd, "Test.xml")
     run_response_manifest = {"results":[]}
     
@@ -114,7 +119,7 @@ def run():
     
     # #clear To_zip directory
     # shutil.rmtree(zip_path_in)
-    # os.makedirs(zip_path_in)
+    
     
     # return send_file(f"{zip_path_out}.zip")
     

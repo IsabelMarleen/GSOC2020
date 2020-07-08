@@ -67,53 +67,54 @@ def run():
     #files = data['manifest']['files']
     
     for file in files:
-        try:
-            file_name = file['filename']
-            file_type = file['edam']
-            file_url = file['url']
-            data = str(file)
+        return(str(file))
+    #     try:
+    #         file_name = file['filename']
+    #         file_type = file['edam']
+    #         file_url = file['url']
+    #         data = str(file)
            
-            converted_file_name = f"{file_name}.converted"
-            file_path_out = os.path.join(cwd, "To_zip", converted_file_name )
+    #         converted_file_name = f"{file_name}.converted"
+    #         file_path_out = os.path.join(cwd, "To_zip", converted_file_name )
         
-            ########## REPLACE THIS SECTION WITH OWN RUN CODE #################
-            with open(file_path, 'r') as xmlfile:
-                result = xmlfile.read()
+    #         ########## REPLACE THIS SECTION WITH OWN RUN CODE #################
+    #         with open(file_path, 'r') as xmlfile:
+    #             result = xmlfile.read()
                             
-            #put in the url, filename, and instance given by synbiohub
-            result = result.replace("TEST_FILE", file_name)
-            result = result.replace("REPLACE_FILENAME", file_name)
-            result = result.replace("REPLACE_FILETYPE", file_type)
-            result = result.replace("REPLACE_FILEURL", file_url)
-            result = result.replace("FILE_DATA_REPLACE", str(data))
-            result = result.replace("DATA_REPLACE", str(run_manifest))
-            ################## END SECTION ####################################
+    #         #put in the url, filename, and instance given by synbiohub
+    #         result = result.replace("TEST_FILE", file_name)
+    #         result = result.replace("REPLACE_FILENAME", file_name)
+    #         result = result.replace("REPLACE_FILETYPE", file_type)
+    #         result = result.replace("REPLACE_FILEURL", file_url)
+    #         result = result.replace("FILE_DATA_REPLACE", str(data))
+    #         result = result.replace("DATA_REPLACE", str(run_manifest))
+    #         ################## END SECTION ####################################
             
-            with open(file_path_out, 'w') as xmlfile:
-                xmlfile.write(result)
+    #         with open(file_path_out, 'w') as xmlfile:
+    #             xmlfile.write(result)
             
-            #add name of converted file to manifest
-            run_response_manifest["results"].append({"filename":converted_file_name,
-                                        "sources":[file_name]})
+    #         #add name of converted file to manifest
+    #         run_response_manifest["results"].append({"filename":converted_file_name,
+    #                                     "sources":[file_name]})
             
-        except Exception as e:
-            print(e)
-            abort(415)
+    #     except Exception as e:
+    #         print(e)
+    #         abort(415)
             
-    #create manifest file
-    file_path_out = os.path.join(cwd, "To_zip", "manifest.json")
-    with open(file_path_out, 'w') as manifest_file:
-            manifest_file.write(str(run_response_manifest)) 
+    # #create manifest file
+    # file_path_out = os.path.join(cwd, "To_zip", "manifest.json")
+    # with open(file_path_out, 'w') as manifest_file:
+    #         manifest_file.write(str(run_response_manifest)) 
         
-    #create zip file of converted files and manifest
-    zip_path_in = os.path.join(cwd, "To_zip")
-    zip_path_out = os.path.join(cwd, "Zip")
-    shutil.make_archive(zip_path_out, 'zip', zip_path_in)
+    # #create zip file of converted files and manifest
+    # zip_path_in = os.path.join(cwd, "To_zip")
+    # zip_path_out = os.path.join(cwd, "Zip")
+    # shutil.make_archive(zip_path_out, 'zip', zip_path_in)
     
-    #clear To_zip directory
-    shutil.rmtree(zip_path_in)
-    os.makedirs(zip_path_in)
+    # #clear To_zip directory
+    # shutil.rmtree(zip_path_in)
+    # os.makedirs(zip_path_in)
     
-    return send_file(f"{zip_path_out}.zip")
+    # return send_file(f"{zip_path_out}.zip")
     
-    os.remove(f"{zip_path_out}.zip")
+    # os.remove(f"{zip_path_out}.zip")

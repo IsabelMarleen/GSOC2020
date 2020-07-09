@@ -1,5 +1,5 @@
 from flask import Flask, request, abort, send_file, jsonify
-import os, shutil, glob
+import os, shutil, glob, random, string
 
 app = Flask(__name__)
 
@@ -87,9 +87,16 @@ def run():
             #read in Test.xml
             with open(file_path, 'r') as xmlfile:
                 result = xmlfile.read()
-                            
+            
+            #create random string of letters that is 15 long for display_id
+            length = 15
+            letters = string.ascii_lowercase
+            result_str = ''.join(random.choice(letters) for i in range(length))
+            display_id = result_str
+                    
             #put in the url, filename, and instance given by synbiohub
             result = result.replace("TEST_FILE", file_name)
+            result = result.replace("REPLACE_DISPLAYID", display_id)
             result = result.replace("REPLACE_FILENAME", file_name)
             result = result.replace("REPLACE_FILETYPE", file_type)
             result = result.replace("REPLACE_FILEURL", file_url)

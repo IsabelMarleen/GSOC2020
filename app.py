@@ -21,7 +21,7 @@ def evaluate():
     
     for file in files:
         file_name = file['filename']
-        file_type = file['edam']
+        file_type = file['type']
         file_url = file['url']
         
         ########## REPLACE THIS SECTION WITH OWN RUN CODE #################
@@ -76,7 +76,7 @@ def run():
     for file in files:
         try:
             file_name = file['filename']
-            file_type = file['edam']
+            file_type = file['type']
             file_url = file['url']
             data = str(file)
            

@@ -11,8 +11,8 @@ def status():
 
 @app.route("/evaluate", methods=["POST"])
 def evaluate():
-    #uses edam ontology: http://edamontology.org/page
-    #https://bioportal.bioontology.org/ontologies/EDAM?p=classes
+    #uses MIME types
+    #https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
     
     eval_manifest = request.get_json(force=True)
     files = eval_manifest['manifest']['files']
@@ -25,11 +25,11 @@ def evaluate():
         file_url = file['url']
         
         ########## REPLACE THIS SECTION WITH OWN RUN CODE #################
-        acceptable_types = {'http://edamontology.org/format_3468',
-                            'http://edamontology.org/format_3620'}
+        acceptable_types = {'application/vnd.ms-excel',
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
         
         #could change what appears in the useful_types based on the file content
-        useful_types = {'http://edamontology.org/format_3752'}
+        useful_types = {'application/xml'}
         
         file_type_acceptable = file_type in acceptable_types
         file_type_useable = file_type in useful_types

@@ -16,7 +16,8 @@ sbol2.setHomespace('http://sys-bio.org')
 doc = sbol2.Document()
 # Load some generic parts from `parts.xml` into another Document
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
-path_parts = os.path.join(cwd, "TestCollection_collection.xml")
+#path_parts = os.path.join(cwd, "TestCollection_collection.xml")
+path_parts = os.path.join(cwd, "SBOL_testcollection.xml")
 doc.read(path_parts)
 
 # # Inspect the Document
@@ -33,7 +34,7 @@ doc.read(path_parts)
 # Extract the medium strength promoter `Medium_2016Interlab` from your document.
 promoter = doc.componentDefinitions['GFP']
 
-# Extract the coding region (cds) `LuxR` from your document.
+# Extract the coding region (cds) `LuxR` from your document. 
 cds = doc.componentDefinitions['Lac_Y']
 
 

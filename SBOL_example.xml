@@ -1,29 +1,112 @@
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v2#">
-  <sbol:ComponentDefinition rdf:about="http://examples.org/ComponentDefinition/GFP/1">
-    <sbol:version>1</sbol:version>
-    <sbol:persistentIdentity rdf:resource="http://examples.org/ComponentDefinition/GFP"/>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:sbol="http://sbols.org/v2#">
+  <sbol:ComponentDefinition rdf:about="http://sys-bio.org/gene_example/1">
+    <sbol:sequenceConstraint>
+      <sbol:SequenceConstraint rdf:about="http://sys-bio.org/gene_example/constraint_0/1">
+        <sbol:displayId>constraint_0</sbol:displayId>
+        <sbol:restriction rdf:resource="http://sbols.org/v2#precedes"/>
+        <sbol:object rdf:resource="http://sys-bio.org/gene_example/LacY_0/1"/>
+        <sbol:subject rdf:resource="http://sys-bio.org/gene_example/GFP_0/1"/>
+        <sbol:version>1</sbol:version>
+        <sbol:persistentIdentity rdf:resource="http://sys-bio.org/gene_example/constraint_0"/>
+      </sbol:SequenceConstraint>
+    </sbol:sequenceConstraint>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://sys-bio.org/gene_example/LacY_annotation_0/1">
+        <sbol:location>
+          <sbol:Range rdf:about="http://sys-bio.org/gene_example/LacY_annotation_0/LacY_annotation_0_range/1">
+            <sbol:version>1</sbol:version>
+            <sbol:start>721</sbol:start>
+            <sbol:end>2007</sbol:end>
+            <sbol:displayId>LacY_annotation_0_range</sbol:displayId>
+            <sbol:persistentIdentity rdf:resource="http://sys-bio.org/gene_example/LacY_annotation_0/LacY_annotation_0_range"/>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:version>1</sbol:version>
+        <sbol:persistentIdentity rdf:resource="http://sys-bio.org/gene_example/LacY_annotation_0"/>
+        <sbol:displayId>LacY_annotation_0</sbol:displayId>
+        <sbol:component rdf:resource="http://sys-bio.org/gene_example/LacY_0/1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:persistentIdentity rdf:resource="http://sys-bio.org/gene_example"/>
+    <sbol:component>
+      <sbol:Component rdf:about="http://sys-bio.org/gene_example/LacY_0/1">
+        <sbol:displayId>LacY_0</sbol:displayId>
+        <sbol:persistentIdentity rdf:resource="http://sys-bio.org/gene_example/LacY_0"/>
+        <sbol:version>1</sbol:version>
+        <sbol:definition rdf:resource="http://sys-bio.org/LacY/1"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000704"/>
+    <sbol:displayId>gene_example</sbol:displayId>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://sys-bio.org/gene_example/GFP_annotation_0/1">
+        <sbol:displayId>GFP_annotation_0</sbol:displayId>
+        <sbol:component rdf:resource="http://sys-bio.org/gene_example/GFP_0/1"/>
+        <sbol:version>1</sbol:version>
+        <sbol:location>
+          <sbol:Range rdf:about="http://sys-bio.org/gene_example/GFP_annotation_0/GFP_annotation_0_range/1">
+            <sbol:start>1</sbol:start>
+            <sbol:version>1</sbol:version>
+            <sbol:displayId>GFP_annotation_0_range</sbol:displayId>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+            <sbol:end>720</sbol:end>
+            <sbol:persistentIdentity rdf:resource="http://sys-bio.org/gene_example/GFP_annotation_0/GFP_annotation_0_range"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:persistentIdentity rdf:resource="http://sys-bio.org/gene_example/GFP_annotation_0"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequence rdf:resource="http://sys-bio.org/gene_example_seq/1"/>
+    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:displayId>GFP</sbol:displayId>
-  </sbol:ComponentDefinition>
-  <sbol:Sequence rdf:about="http://examples.org/Sequence/GFP_seq/1">
-    <sbol:persistentIdentity rdf:resource="http://examples.org/Sequence/GFP_seq"/>
-    <sbol:elements>atgcgtaaag gagaagaact tttcactgga gttgtcccaa ttcttgttga
-            attagatggt gatgttaatg ggcacaaatt ttctgtcagt ggagagggtg
-            aaggtgatgc aacatacgga aaacttaccc ttaaatttat ttgcactact
-            ggaaaactac ctgttccatg gccaacactt gtcactactt tcggttatgg
-            tgttcaatgc tttgcgagat acccagatca tatgaaacag catgactttt
-            tcaagagtgc catgcccgaa ggttatgtac aggaaagaac tatatttttc
-            aaagatgacg ggaactacaa gacacgtgct gaagtcaagt ttgaaggtga
-            tacccttgtt aatagaatcg agttaaaagg tattgatttt aaagaagatg
-            gaaacattct tggacacaaa ttggaataca actataactc acacaatgta
-            tacatcatgg cagacaaaca aaagaatgga atcaaagtta acttcaaaat
-            tagacacaac attgaagatg gaagcgttca actagcagac cattatcaac
-            aaaatactcc aattggcgat ggccctgtcc ttttaccaga caaccattac
-            ctgtccacac aatctgccct ttcgaaagat cccaacgaaa agagagacca
-            catggtcctt cttgagtttg taacagctgc tgggattaca catggcatgg
-            atgaactata caaataataa</sbol:elements>
     <sbol:version>1</sbol:version>
-    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+    <sbol:component>
+      <sbol:Component rdf:about="http://sys-bio.org/gene_example/GFP_0/1">
+        <sbol:displayId>GFP_0</sbol:displayId>
+        <sbol:definition rdf:resource="http://sys-bio.org/GFP/1"/>
+        <sbol:persistentIdentity rdf:resource="http://sys-bio.org/gene_example/GFP_0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:version>1</sbol:version>
+      </sbol:Component>
+    </sbol:component>
+  </sbol:ComponentDefinition>
+  <sbol:Sequence rdf:about="http://sys-bio.org/GFP_seq/1">
+    <sbol:version>1</sbol:version>
+    <sbol:elements>atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagaccacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa</sbol:elements>
+    <sbol:persistentIdentity rdf:resource="http://sys-bio.org/GFP_seq"/>
     <sbol:displayId>GFP_seq</sbol:displayId>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://sys-bio.org/LacY_seq/1">
+    <sbol:version>1</sbol:version>
+    <sbol:displayId>LacY_seq</sbol:displayId>
+    <sbol:persistentIdentity rdf:resource="http://sys-bio.org/LacY_seq"/>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+    <sbol:elements>atgtctgcccgtatttcgcgtaaggaaatccattatgtactatttaaaaaacacaaacttttggatgttcggtttattctttttcttttacttttttatcatgggagcctacttcccgtttttcccgatttggctacatgacatcaaccatatcagcaaaagtgatacgggtattatttttgccgctatttctctgttctcgctattattccaaccgctgtttggtctgctttctgacaaactcgggctgcgcaaatacctgctgtggattattaccggcatgttagtgatgtttgcgccgttctttatttttatcttcgggccactgttacaatacaacattttagtaggatcgattgttggtggtatttatctaggcttttgttttaacgccggtgcgccagcagtagaggcatttattgagaaagtcagccgtcgcagtaatttcgaatttggtcgcgcgcggatgtttggctgtgttggctgggcgctgtgtgcctcgatttcggcatcatgttcaccatcaataatcagtttgttttctggctgggctctggctgtgcactcatcctcgccgttttactctttttcgccaaaacggatgcgccctcttctgccacggttgccaatgcggtaggtgccaaccattcggcatttagccttaagctggcactggaactgttcagacagccaaaactgtggtttttgtcactgtatgttattggcgtttcctgcacctacgatgtttttgaccaacagtttgctaatttctttacttcgttctttgctaccggtgaacagggtacgcgggtatttggctacgtaacgacaatgggcgaattacttaacgcctcgattatgttctttgcgccactgatcattaatcgcatcggtgggaaaaacgccctgctgctggctggcactattatgtctgtacgtattattggctcatcgttcgccacctcagcgctggaagtggttattctgaaaacgctgcatatgtttgaagtaccgttcctgctggtgggctgctttaaatatattaccagccagtttgaagtgcgtttttcagcgacgatttatctggtctgtttctgcttctttaagcaactggcgatgatttttatgtctgtactggcgggcaatatgtatgaaagcatcggtttccagggcgcttatctggtgctgggtctggtggcgctgggcttcaccttaatttccgtgttcacgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaagtcgcttaa</sbol:elements>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://sys-bio.org/gene_example_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://sys-bio.org/gene_example_seq"/>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+    <sbol:displayId>gene_example_seq</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:elements>atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagaccacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataaatgtctgcccgtatttcgcgtaaggaaatccattatgtactatttaaaaaacacaaacttttggatgttcggtttattctttttcttttacttttttatcatgggagcctacttcccgtttttcccgatttggctacatgacatcaaccatatcagcaaaagtgatacgggtattatttttgccgctatttctctgttctcgctattattccaaccgctgtttggtctgctttctgacaaactcgggctgcgcaaatacctgctgtggattattaccggcatgttagtgatgtttgcgccgttctttatttttatcttcgggccactgttacaatacaacattttagtaggatcgattgttggtggtatttatctaggcttttgttttaacgccggtgcgccagcagtagaggcatttattgagaaagtcagccgtcgcagtaatttcgaatttggtcgcgcgcggatgtttggctgtgttggctgggcgctgtgtgcctcgatttcggcatcatgttcaccatcaataatcagtttgttttctggctgggctctggctgtgcactcatcctcgccgttttactctttttcgccaaaacggatgcgccctcttctgccacggttgccaatgcggtaggtgccaaccattcggcatttagccttaagctggcactggaactgttcagacagccaaaactgtggtttttgtcactgtatgttattggcgtttcctgcacctacgatgtttttgaccaacagtttgctaatttctttacttcgttctttgctaccggtgaacagggtacgcgggtatttggctacgtaacgacaatgggcgaattacttaacgcctcgattatgttctttgcgccactgatcattaatcgcatcggtgggaaaaacgccctgctgctggctggcactattatgtctgtacgtattattggctcatcgttcgccacctcagcgctggaagtggttattctgaaaacgctgcatatgtttgaagtaccgttcctgctggtgggctgctttaaatatattaccagccagtttgaagtgcgtttttcagcgacgatttatctggtctgtttctgcttctttaagcaactggcgatgatttttatgtctgtactggcgggcaatatgtatgaaagcatcggtttccagggcgcttatctggtgctgggtctggtggcgctgggcttcaccttaatttccgtgttcacgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaagtcgcttaa</sbol:elements>
+  </sbol:Sequence>
+  <sbol:ComponentDefinition rdf:about="http://sys-bio.org/LacY/1">
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:version>1</sbol:version>
+    <sbol:displayId>LacY</sbol:displayId>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+    <sbol:sequence rdf:resource="http://sys-bio.org/LacY_seq/1"/>
+    <sbol:persistentIdentity rdf:resource="http://sys-bio.org/LacY"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://sys-bio.org/GFP/1">
+    <sbol:sequence rdf:resource="http://sys-bio.org/GFP_seq/1"/>
+    <sbol:version>1</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+    <sbol:displayId>GFP</sbol:displayId>
+    <sbol:persistentIdentity rdf:resource="http://sys-bio.org/GFP"/>
+  </sbol:ComponentDefinition>
 </rdf:RDF>

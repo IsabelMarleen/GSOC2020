@@ -1,16 +1,27 @@
-#Setup
-import sbol2
 from sbol2 import *
 
-
-#Create SBOL document
+setHomespace('http://sys-bio.org')
 doc = Document()
+Config.setOption('sbol_typed_uris', False)
 
-#Define SBOL object and components
-GFP = ComponentDefinition('GFP', BIOPAX_DNA)
-doc.addComponentDefinition(GFP)
-       
-sequence =  """atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgg
+gene = ComponentDefinition('gene_example')
+GFP = ComponentDefinition('GFP')
+LacY = ComponentDefinition('LacY')
+
+GFP.roles = SO_CDS
+LacY.roles = SO_CDS
+
+doc.addComponentDefinition(gene)
+doc.addComponentDefinition([GFP, LacY])
+
+gene.assemblePrimaryStructure([GFP, LacY])
+
+first = gene.getFirstComponent()
+print(first.identity)
+last = gene.getLastComponent()
+print(last.identity)
+
+sequence1= """atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgg
 gcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaac
 tacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcat
 gactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgct
@@ -20,13 +31,7 @@ acaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtcctttta
 ccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagaccacatggtccttcttgagtttgtaacagctgct
 gggattacacatggcatggatgaactatacaaataataa"""
 
-GFP_seq = Sequence('GFP_seq', sequence, SBOL_ENCODING_IUPAC)
-doc.addSequence(GFP_seq)
-
-LacY = ComponentDefinition('LacY', BIOPAX_DNA)
-doc.addComponentDefinition(LacY)
-       
-sequence2 =  """atgtctgcccgtatttcgcgtaaggaaatccattatgtactatttaaaaaacacaaacttttg
+sequence2 = """atgtctgcccgtatttcgcgtaaggaaatccattatgtactatttaaaaaacacaaacttttg
 gatgttcggtttattctttttcttttacttttttatcatgggagcctacttcccgtttttcccgatttggctacatgacatcaaccata
 tcagcaaaagtgatacgggtattatttttgccgctatttctctgttctcgctattattccaaccgctgtttggtctgctttctgacaa
 actcgggctgcgcaaatacctgctgtggattattaccggcatgttagtgatgtttgcgccgttctttatttttatcttcgggccactgt
@@ -42,31 +47,17 @@ aatatattaccagccagtttgaagtgcgtttttcagcgacgatttatctggtctgtttctgcttctttaagcaactggcg
 tatgtctgtactggcgggcaatatgtatgaaagcatcggtttccagggcgcttatctggtgctgggtctggtggcgctgggcttcacc
 ttaatttccgtgttcacgcttagcggccccggcccgctttccctgctgcgtcgtcaggtgaatgaagtcgcttaa"""
 
-LacY_seq = Sequence('LacY_seq', sequence2, SBOL_ENCODING_IUPAC)
-doc.addSequence(LacY_seq)
+sequence1 = "".join(sequence1.split())
+sequence1 = sequence1.replace( u"\ufeff", "")
+sequence2 = "".join(sequence2.split())
+sequence2 = sequence2.replace( u"\ufeff", "")
 
+GFP.sequence = Sequence('GFP_seq', sequence1, SBOL_ENCODING_IUPAC)
+LacY.sequence = Sequence('LacY_seq', sequence2, SBOL_ENCODING_IUPAC)
 
-promoter = doc.componentDefinitions['GFP']
-cds = doc.componentDefinitions['LacY']
+target_sequence = gene.compile()
 
-
-#Composition
-composition_component = doc.componentDefinitions.create("composition_component")
-#composition_component.assemblePrimaryStructure(['https://synbiohub.org/public/igem/BBa_K1499503/1', 'https://synbiohub.org/public/igem/BBa_K1499503/1'])
-composition_component.assemblePrimaryStructure([promoter, cds])
-for cd in composition_component.getPrimaryStructure():
-    print(cd.displayId)
-    
-nucleotides = composition_component.compile()
-print (nucleotides)
-seq = composition_component.sequence
-print(seq.elements)
-
-composition_component.roles = [SO_GENE]
+gene.roles = [SO_GENE]
 
 #Export
 doc.write('SBOL_example.xml')
-
-
-
-

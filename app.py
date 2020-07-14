@@ -61,7 +61,7 @@ def run():
     
     #remove to zip directory if it exists
     try:
-        os.remove(zip_path_in)
+        shutil.rmtree(zip_path_in, ignore_errors=True)
     except:
         print("No To_zip exists currently")
         
@@ -131,7 +131,7 @@ def run():
     shutil.make_archive(zip_path_out, 'zip', zip_path_in)
     
     #clear To_zip directory
-    os.remove(zip_path_in)
+    shutil.rmtree(zip_path_in, ignore_errors=True)
     
     return send_file(f"{zip_path_out}.zip")
     

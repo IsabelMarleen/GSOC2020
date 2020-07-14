@@ -125,7 +125,7 @@ def run():
     shutil.make_archive(zip_path_out, 'zip', zip_path_in)
     
     #clear To_zip directory
-    shutil.rmtree(zip_path_in)
+    os.remove(zip_path_in)
     
     return send_file(f"{zip_path_out}.zip")
     

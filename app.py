@@ -59,6 +59,12 @@ def run():
     zip_path_in = os.path.join(cwd, "To_zip")
     zip_path_out = os.path.join(cwd, "Zip")
     
+    #remove to zip directory if it exists
+    try:
+        os.remove(zip_path_in)
+    except:
+        print("No To_zip exists currently")
+        
     #make to zip directory
     os.makedirs(zip_path_in)
     

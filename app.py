@@ -1,5 +1,6 @@
 from flask import Flask, request, abort, send_file, jsonify
 import os, shutil, glob, random, string
+#import all functions from .py files
 
 app = Flask(__name__)
 
@@ -91,6 +92,7 @@ def run():
         
             ########## REPLACE THIS SECTION WITH OWN RUN CODE #################
             #read in Test.xml
+            #Create own xml files using Excel.py etc.
             with open(file_path, 'r') as xmlfile:
                 result = xmlfile.read()
             

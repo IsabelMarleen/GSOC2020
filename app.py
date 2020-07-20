@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route("/status")
 def status():
-    return("The Submit Test Plugin Flask Server is up and running")
+    return("The Submit Excel Plugin Flask Server is up and running")
 
 
 
@@ -32,7 +32,7 @@ def evaluate():
                             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
         
         #could change what appears in the useful_types based on the file content
-        useful_types = {'application/xml'}
+        useful_types = {}
         
         file_type_acceptable = file_type in acceptable_types
         file_type_useable = file_type in useful_types

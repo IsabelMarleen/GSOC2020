@@ -15,12 +15,12 @@ from the very beginning.
 
 https://medium.com/@IsaMarleen
 
-# Plugin-Submit-Test
+# Plugin-Submit-Excel
 A very simple submit plugin that returns sbol files with submit information
 
 # Install
 ## Docker
-Run `docker run --publish 8087:5000 --detach --name submit-plug synbiohub/plugin-submit-test:snapshot`
+Run `docker run --publish 8087:5000 --detach --name submit-plug synbiohub/plugin-submit-excel:snapshot`
 Check it is up using http://localhost:8087/status.
 
 ## Using Python

@@ -36,9 +36,6 @@ def evaluate():
         
         file_type_acceptable = file_type in acceptable_types
         file_type_useable = file_type in useful_types
-        
-        #to ensure all file types are accepted
-        file_type_acceptable = True
         ################## END SECTION ####################################
         
         if file_type_acceptable:

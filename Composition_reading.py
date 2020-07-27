@@ -54,25 +54,16 @@ if not(comparison.all()) :
           
 
 #Load Libraries required for Parts
-# libraries = pd.read_excel(path_filled, sheet_name = sheet_name,
-#                            header= None, nrows = 2, skiprows = 9, index_col=0)
-
-# libraries = pd.DataFrame({"a":0, "b":1}, index=[0])
 libraries = dict()
 if table.iloc[0][0] == "Libraries" and table.iloc[0][1] == "Abbreviations":
-    for index, row in table.iterrows():
+    for index, row in table.iloc[1:len(table)].iterrows():
         if row[0] == "Composite DNA Parts" or row.dropna().empty:
-            print("Miau")
             break
         else:
-            if not pd.isnull(table.iloc[index+1][1]):
-                print("Fauch")
-                libraries[table.iloc[index+1][1]] = table.iloc[index+1][0]
+            if not pd.isnull(table.iloc[index][1]):
+                libraries[table.iloc[index][1]] = table.iloc[index][0]
             else:
-                libraries[table.iloc[index+1][0]] = table.iloc[index+1][0]
-
-        
-
+                libraries[table.iloc[index][0]] = table.iloc[index][0]
 
 
 #Loop over all rows and find those where each block begins
@@ -108,8 +99,8 @@ for index, value in enumerate(list_of_rows):
         
 all_parts = set(all_parts) #set eliminates duplicates
     
-
-PartShop(url)
+sbol2.setHomespace('http://sys-bio.org')
+igem = sbol2.PartShop(libraries["igem"])
 
 
 #for key, value in compositions.items():

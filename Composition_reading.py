@@ -15,12 +15,11 @@ from col_to_excel import col_to_excel
 import sbol2
 from sbol2 import Document, Component, ComponentDefinition
 from sbol2 import BIOPAX_DNA, Sequence, SBOL_ENCODING_IUPAC, PartShop
-#import Excel
-#from Excel import doc
+# from Excel import doc
 
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
 path_filled = os.path.join(cwd, "darpa_template.xlsx")
-path_blank = os.path.join(cwd, "darpa_template_blank.xlsx")
+path_blank = os.path.join(cwd, "templates/darpa_template_blank.xlsx")
 
 #read in the whole sheet
 startrow_composition = 9
@@ -55,17 +54,25 @@ if not(comparison.all()) :
           
 
 #Load Libraries required for Parts
-libraries = pd.read_excel(path_filled, sheet_name = sheet_name,
-                           header= None, nrows = 2, skiprows = 9, index_col=0)
-libraries = pd.DataFrame({"a":0, "b":1}, index=[0])
-for index, row in table.iterrows():
-    if row[0] == "Libraries" and row[1] == "Abbreviations":
-        libraries.append(row)
-        print("Boohoo")
-    elif row[0] == "Composite DNA Parts" or row.all():
+# libraries = pd.read_excel(path_filled, sheet_name = sheet_name,
+#                            header= None, nrows = 2, skiprows = 9, index_col=0)
+
+# libraries = pd.DataFrame({"a":0, "b":1}, index=[0])
+libraries = dict()
+if table.iloc[0][0] == "Libraries" and table.iloc[0][1] == "Abbreviations":
+    for index, row in table.iterrows():
+        if row[0] == "Composite DNA Parts" or row.dropna().empty:
+            print("Miau")
             break
-    else:
-        libraries.append(row)
+        else:
+            if not pd.isnull(table.iloc[index+1][1]):
+                print("Fauch")
+                libraries[table.iloc[index+1][1]] = table.iloc[index+1][0]
+            else:
+                libraries[table.iloc[index+1][0]] = table.iloc[index+1][0]
+
+        
+
 
 
 #Loop over all rows and find those where each block begins
@@ -103,6 +110,8 @@ all_parts = set(all_parts) #set eliminates duplicates
     
 
 PartShop(url)
+
+
 #for key, value in compositions.items():
 #    print(value["Parts"])
 

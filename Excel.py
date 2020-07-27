@@ -80,8 +80,6 @@ def read_library(path, start_row, nrows, description_row, use_cols = [0, 1],
 start_row = 13
 nrows = 8
 description_row = 9
-description_col = [0]
-use_cols = [0,1]
 
 filled_library, filled_library_metadata, filled_description = read_library(path_filled,  
                 start_row = start_row, nrows = nrows, description_row = description_row)
@@ -97,7 +95,7 @@ ontology= ontology.to_dict("dict")[1]
 
 #Description
 def quality_check(filled_library, blank_library, filled_metadata, blank_metadata, filled_description,
-                  blank_description):
+                  blank_description, use_cols = [0,1]):
     """
     the function compares the edited excel spreadsheet with the template
 
@@ -115,6 +113,8 @@ def quality_check(filled_library, blank_library, filled_metadata, blank_metadata
         Dataframe containing the description data
     blank_description : DATAFRAME
         Dataframe containing the description template
+    usecols: LIST, default = [0, 1]
+        Defines which columns were used read for the metadata section (note column A is 0)
 
     Returns
     -------

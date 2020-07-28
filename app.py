@@ -111,10 +111,6 @@ def run():
             doc.write(file_path_out)
             ################## END SECTION ####################################
             
-            #write out result to "To_zip" file
-            with open(file_path_out, 'w') as xmlfile:
-                xmlfile.write(result)
-            
             # add name of converted file to manifest
             run_response_manifest["results"].append({"filename":converted_file_name,
                                         "sources":[file_name]})

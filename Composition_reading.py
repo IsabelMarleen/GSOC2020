@@ -125,8 +125,8 @@ igem = sbol2.PartShop(libraries["igem"])
 for part in all_parts:
     print(part)
     records = igem.pull(part, doc)
-    for r in records:
-        print(r)
+    # for r in records:
+    #     print(r)
 
 #for key, value in compositions.items():
 #    print(value["Parts"])

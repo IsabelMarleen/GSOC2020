@@ -73,7 +73,7 @@ def run():
     files = run_manifest['manifest']['files']
     
     #Remove this line if not needed
-    file_path = os.path.join(cwd, "templates/darpa_template_blank.xlsx")
+    file_path = os.path.join(cwd, "templates", "darpa_template_blank.xlsx")
     
     #initiate response manifest
     run_response_manifest = {"results":[]}

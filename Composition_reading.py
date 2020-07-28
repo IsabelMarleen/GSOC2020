@@ -93,11 +93,20 @@ for index, value in enumerate(list_of_rows):
     
     if len(parts) == 0:
         del compositions[value]
+        list_of_rows.remove(value)
     else:
         compositions[value]['Parts'] = parts.tolist()
         all_parts+=compositions[value]["Parts"]
         
 all_parts = set(all_parts) #set eliminates duplicates
+
+#Check if Collection names are alphanumeric and separated by underscore
+for index, value in enumerate(list_of_rows):
+    print(compositions[value]['Collection Name'])
+    if "_" in compositions[value]['Collection Name']:
+        title = compositions[value]['Collection Name'].replace('_', '')
+        if title.isalnum():
+            print("Collection names are valid")
     
 
 doc = Document()

@@ -106,7 +106,16 @@ for index, value in enumerate(list_of_rows):
     if "_" in compositions[value]['Collection Name']:
         title = compositions[value]['Collection Name'].replace('_', '')
         if title.isalnum():
-            print("Collection names are valid")
+            print(f"Collection name {compositions[value]['Collection Name']} is valid")
+        else:
+            title.encode(errors = "replace")
+            print(title)
+    else:
+        if title.isalnum():
+            print(f"Collection name {compositions[value]['Collection Name']} is valid")
+        else:
+            
+            title.encode('ascii','ignore')
     
 
 doc = Document()

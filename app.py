@@ -72,7 +72,7 @@ def run():
     run_manifest = request.get_json(force=True)
     files = run_manifest['manifest']['files']
     
-    #Remove this line if not needed
+    #Read in template to compare to
     file_path = os.path.join(cwd, "templates", "darpa_template_blank.xlsx")
     
     #initiate response manifest
@@ -132,5 +132,5 @@ def run():
     
     return send_file(f"{zip_path_out}.zip")
     
-    #delete zip file
-    os.remove(f"{zip_path_out}.zip")
+    # #delete zip file
+    # os.remove(f"{zip_path_out}.zip")

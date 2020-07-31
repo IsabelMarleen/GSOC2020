@@ -20,7 +20,7 @@ A very simple submit plugin that returns sbol files with submit information
 
 # Install
 ## Docker
-Run `docker run --publish 8093:5000 --detach --name submit-plug synbiohub/plugin-submit-excel:snapshot`
+Run `docker run --publish 8093:5000 --detach --name submit-plug synbiohub/plugin-submit-excel-temp:snapshot`
 Check it is up using http://localhost:8093/status.
 
 ## Using Python

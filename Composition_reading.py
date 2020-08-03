@@ -15,7 +15,7 @@ from col_to_excel import col_to_excel
 import sbol2
 from sbol2 import Document, Component, ComponentDefinition
 from sbol2 import BIOPAX_DNA, Sequence, SBOL_ENCODING_IUPAC, PartShop
-# from Excel import doc
+import re
 
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
 path_filled = os.path.join(cwd, "darpa_template.xlsx")
@@ -102,21 +102,24 @@ all_parts = set(all_parts) #set eliminates duplicates
 
 #Check if Collection names are alphanumeric and separated by underscore
 for index, value in enumerate(list_of_rows):
-    print(compositions[value]['Collection Name'])
-    if "_" in compositions[value]['Collection Name']:
-        title = compositions[value]['Collection Name'].replace('_', '')
-        if title.isalnum():
-            print(f"Collection name {compositions[value]['Collection Name']} is valid")
-        else:
-            title.encode(errors = "replace")
-            print(title)
-    else:
-        if title.isalnum():
-            print(f"Collection name {compositions[value]['Collection Name']} is valid")
-        else:
-            
-            title.encode('ascii','ignore')
-    
+    old = compositions[value]['Collection Name'] #for error warning
+    title = compositions[value]['Collection Name'].replace('_', '') #remove underscore to use isalnum()
+    if title.isalnum():
+        print(f"Collection name {compositions[value]['Collection Name']} is valid")
+    else: #replace special characters with numbers
+        for letter in title:
+            if ord(letter) > 122:
+                #122 is the highest decimal code number for common latin letters or arabic numbers
+                #this helps identify special characters like ä or ñ, which isalnum() returns as true
+                #the characters that don't meet this criterion are replaced by their decimal code number separated by an underscore
+                compositions[value]['Collection Name'] = compositions[value]['Collection Name'].replace(letter, str( f"_{ord(letter)}"))
+            else:
+                letter = re.sub('[\w, \s]', '', letter) #remove all letters, numbers and whitespaces
+                #this enables replacing all other special characters that are under 122
+                if len(letter) > 0:
+                    compositions[value]['Collection Name'] = compositions[value]['Collection Name'].replace(letter, str( f"_{ord(letter)}"))
+        print(f"Collection name {old} was not valid and replaced by {compositions[value]['Collection Name']}")
+
 
 doc = Document()
 
@@ -125,16 +128,14 @@ igem = sbol2.PartShop(libraries["igem"])
 for part in all_parts:
     print(part)
     records = igem.pull(part, doc)
-    # for r in records:
-    #     print(r)
+
 
 #for key, value in compositions.items():
 #    print(value["Parts"])
 
 
-# doc = Document()
-# composition_component = doc.componentDefinitions.create("composition_component")
-# composition_component.assemblePrimaryStructure([GFP, LacY], IGEM_STANDARD_ASSEMBLY)
+composition_component = doc.componentDefinitions.create("composition_component")
+#composition_component.assemblePrimaryStructure([GFP, LacY], IGEM_STANDARD_ASSEMBLY)
 # for c in composition_component.getPrimaryStructure():
 #     print(cd.displayId)
     
@@ -144,4 +145,6 @@ for part in all_parts:
 # print(seq.elements)
 
 # composition_component.roles = [SO_GENE]
+
+
 

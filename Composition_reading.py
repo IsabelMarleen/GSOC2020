@@ -127,15 +127,45 @@ sbol2.setHomespace('http://sys-bio.org')
 igem = sbol2.PartShop(libraries["igem"])
 for part in all_parts:
     print(part)
-    records = igem.pull(part, doc)
+    igem.pull(part, doc)
+    
+    
+# GSOC_SBH_URL = 'https://synbiohub.org'
+# collection = 'https://synbiohub.org/public/igem/igem_collection/1'
+# display_id = 'BBa_E0040'
+# query = sbol2.SearchQuery()
+# query[sbol2.SBOL_COLLECTION] = collection
+# query[sbol2.SBOL_DISPLAY_ID] = display_id
+# # GSOC is always looking for DNA Region
+# query[sbol2.SBOL_TYPES] = sbol2.BIOPAX_DNA
+# part_shop = sbol2.PartShop(GSOC_SBH_URL)
+# response = part_shop.search(query)
+# At least one item in return should be the
+# expected return: https://synbiohub.org/public/igem/BBa_E0040/1
+# identities = [r.identity for r in response]
+# self.assertIn('https://synbiohub.org/public/igem/BBa_E0040/1', identities)
+# #
+# # All items in response should have name == GFP exactly.
+# display_ids = [r.displayId == display_id for r in response]
+# self.assertTrue(all(display_ids))
+
+
+
+
+# rbs = doc.componentDefinitions['BBa_E0040']
+# cds = doc.componentDefinitions['BBa_I719005']
+# ppp = doc.componentDefinitions['BBa_R0040']
 
 
 #for key, value in compositions.items():
 #    print(value["Parts"])
 
 
-composition_component = doc.componentDefinitions.create("composition_component")
-#composition_component.assemblePrimaryStructure([GFP, LacY], IGEM_STANDARD_ASSEMBLY)
+# Create a new empty device named `my_device`
+
+# Create a new empty device named `my_device`
+composition_component= doc.componentDefinitions.create('composition_component')
+composition_component.assemblePrimaryStructure(['BBa_E0040', 'BBa_I719005', 'BBa_R0040'], sbol2.IGEM_STANDARD_ASSEMBLY)
 # for c in composition_component.getPrimaryStructure():
 #     print(cd.displayId)
     

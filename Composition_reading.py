@@ -84,17 +84,19 @@ for index, row in table.iterrows():
 
 #Extract part names from compositions
 all_parts = []
-     
-for index, value in enumerate(list_of_rows):
-    if index == len(list_of_rows)-1:
-        parts = table.iloc[value+5: len(table)][1].dropna()
-    else:
-        parts = table.iloc[value+5: list_of_rows[index+1]][1].dropna()
-    
-    if len(parts) == 0:
-        del compositions[value]
-        list_of_rows.remove(value)
-    else:
+   
+for column in range(1,5):
+    for index, value in enumerate(list_of_rows):
+        if index == len(list_of_rows)-1:
+            parts = table.iloc[value+5: len(table)][column].dropna()
+        else:
+            print(parts)
+            parts = table.iloc[value+5: list_of_rows[index+1]][column].dropna()
+    # if len(parts) == 0:
+    #     print("Boohoo")
+    #     # del compositions[value]
+    #     # list_of_rows.remove(value)
+   # else:
         compositions[value]['Parts'] = parts.tolist()
         all_parts+=compositions[value]["Parts"]
         
@@ -123,11 +125,22 @@ for index, value in enumerate(list_of_rows):
 
 doc = Document()
 
-sbol2.setHomespace('http://sys-bio.org')
-igem = sbol2.PartShop(libraries["igem"])
-for part in all_parts:
-    print(part)
-    igem.pull(part, doc)
+for library in libraries:
+    sbol2.setHomespace('http://sys-bio.org')
+    library = sbol2.PartShop(libraries[library])
+    for part in all_parts:
+        print(part)
+        library.pull(part, doc)
+
+# bsu = 'https://synbiohub.org/public/bsu'
+# bsu = sbol2.PartShop(bsu)
+# for part in all_parts:
+#     print(part)
+#     bsu.pull(part, doc)
+    
+
+#bsu.pull('BO_32977', doc)
+#'BBa_E0040', 'BBa_I719005', 'BBa_M36010', 'BBa_R0040'
     
     
 # GSOC_SBH_URL = 'https://synbiohub.org'
@@ -140,14 +153,14 @@ for part in all_parts:
 # query[sbol2.SBOL_TYPES] = sbol2.BIOPAX_DNA
 # part_shop = sbol2.PartShop(GSOC_SBH_URL)
 # response = part_shop.search(query)
-# At least one item in return should be the
-# expected return: https://synbiohub.org/public/igem/BBa_E0040/1
+# # At least one item in return should be the
+# # expected return: https://synbiohub.org/public/igem/BBa_E0040/1
 # identities = [r.identity for r in response]
-# self.assertIn('https://synbiohub.org/public/igem/BBa_E0040/1', identities)
-# #
-# # All items in response should have name == GFP exactly.
-# display_ids = [r.displayId == display_id for r in response]
-# self.assertTrue(all(display_ids))
+# # self.assertIn('https://synbiohub.org/public/igem/BBa_E0040/1', identities)
+# # #
+# # # All items in response should have name == GFP exactly.
+# # display_ids = [r.displayId == display_id for r in response]
+# # self.assertTrue(all(display_ids))
 
 
 
@@ -165,7 +178,7 @@ for part in all_parts:
 
 # Create a new empty device named `my_device`
 composition_component= doc.componentDefinitions.create('composition_component')
-composition_component.assemblePrimaryStructure(['BBa_E0040', 'BBa_I719005', 'BBa_R0040'], sbol2.IGEM_STANDARD_ASSEMBLY)
+composition_component.assemblePrimaryStructure(list(all_parts))
 # for c in composition_component.getPrimaryStructure():
 #     print(cd.displayId)
     

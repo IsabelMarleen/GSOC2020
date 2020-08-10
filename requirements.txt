@@ -7,7 +7,7 @@ itsdangerous==1.1.0
 Jinja2==2.11.0
 MarkupSafe==1.1.1
 requests==2.22.0
-sbol2==1.1
+sbol2==1.0
 urllib3==1.25.8
 waitress==1.4.4
 Werkzeug==0.16.1

@@ -74,11 +74,13 @@ labels = np.array(["Collection Name:", "Name:", "Description:", "Strain (optiona
 for index, row in table.iterrows():
     labs = np.asarray(table.iloc[index : index+6][0])
     comparison = labs == labels
+    
     if row[0] == "Collection Name:" and comparison.all() :
         list_of_rows.append(index)    
-        compositions[index] = {"Collection Name": table.iloc[index][1],
-                    "Name" : table.iloc[index+1][1],
-                    "Parts": {} }
+        compositions[index] = {[table.iloc[index][1]] : {
+                               #"Collection Name" : [table.iloc[index][1]]:
+                                "Name" : table.iloc[index+1][1],
+                                "Parts": {} }}
     else:
         names = table.iloc[index: index+6][0].tolist()
 
@@ -93,9 +95,10 @@ for column in range(1,5):
             print(parts)
             parts = table.iloc[value+5: list_of_rows[index+1]][column].dropna()
     # if len(parts) == 0:
-    #     print("Boohoo")
+    #     logging.warning(f"The collection {compositions[value]} was empty and thus removed")
     #     # del compositions[value]
     #     # list_of_rows.remove(value)
+            
    # else:
         compositions[value]['Parts'] = parts.tolist()
         all_parts+=compositions[value]["Parts"]

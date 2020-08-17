@@ -10,7 +10,6 @@ import pandas as pd
 import numpy as np
 import os
 import logging
-import col_to_excel
 from col_to_excel import col_to_excel
 import sbol2
 from sbol2 import Document, Component, ComponentDefinition
@@ -78,9 +77,11 @@ for index, row in table.iterrows():
     if row[0] == "Collection Name:" and comparison.all() :
         list_of_rows.append(index)    
         compositions[index] = {[table.iloc[index][1]] : {
-                               #"Collection Name" : [table.iloc[index][1]]:
+                                [table.iloc[index][1]] : {
+                                #"Collection Name" : [table.iloc[index][1]]:
                                 "Name" : table.iloc[index+1][1],
-                                "Parts": {} }}
+                                "Parts": {}
+                                    }}}
     else:
         names = table.iloc[index: index+6][0].tolist()
 

@@ -12,19 +12,18 @@ import os
 import logging
 from col_to_excel import col_to_excel
 import sbol2
-from sbol2 import Document, Component, ComponentDefinition
-from sbol2 import BIOPAX_DNA, Sequence, SBOL_ENCODING_IUPAC, PartShop
+from sbol2 import Document, PartShop
 import re
 
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
 path_filled = os.path.join(cwd, "darpa_template.xlsx")
 path_blank = os.path.join(cwd, "templates/darpa_template_blank.xlsx")
 
-#read in the whole sheet
+#read in the whole sheet below metadata
 startrow_composition = 9
 sheet_name = "Composite Parts"
 table = pd.read_excel (path_filled, sheet_name = sheet_name, 
-                       header = None, skiprows = startrow_composition) # below metadata
+                       header = None, skiprows = startrow_composition)
 
 #Load Metadata and Quality Check
 nrows = 8
@@ -56,9 +55,10 @@ if not(comparison.all()) :
 libraries = dict()
 if table.iloc[0][0] == "Libraries" and table.iloc[0][1] == "Abbreviations":
     for index, row in table.iloc[1:len(table)].iterrows():
-        if row[0] == "Composite DNA Parts" or row.dropna().empty:
+        if row[0] == "Composite DNA Parts" or row.dropna().empty: 
             break
         else:
+            #if there is no abbreviation, use full name as key
             if not pd.isnull(table.iloc[index][1]):
                 libraries[table.iloc[index][1]] = table.iloc[index][0]
             else:
@@ -66,45 +66,66 @@ if table.iloc[0][0] == "Libraries" and table.iloc[0][1] == "Abbreviations":
 
 
 #Loop over all rows and find those where each block begins
-list_of_rows = []
 compositions = dict()
+all_parts = []
 labels = np.array(["Collection Name:", "Name:", "Description:", "Strain (optional)",
           "Integration Locus (optional)", "Part Sequence:"])
 for index, row in table.iterrows():
+    #identifies set of six rows in table where first column matches the labels
     labs = np.asarray(table.iloc[index : index+6][0])
-    comparison = labs == labels
+    comparison = labs == labels 
     
     if row[0] == "Collection Name:" and comparison.all() :
-        list_of_rows.append(index)    
-        compositions[index] = {[table.iloc[index][1]] : {
-                                [table.iloc[index][1]] : {
-                                #"Collection Name" : [table.iloc[index][1]]:
-                                "Name" : table.iloc[index+1][1],
-                                "Parts": {}
-                                    }}}
+        #check if collection name exists in a previous block if so add to that dictionary or if not
+        #create a new one
+        try:
+            collection_dict = compositions[table.iloc[index][1]]
+        except:
+            collection_dict = {}
+            
+        for column in range(1,5):
+            if type(table.iloc[index+1][column]) is str: #check if name is not empty
+                collection_dict[table.iloc[index+1][column]] = {"Description" : {table.iloc[index+2][column]},
+                                                                "Parts" : {}}
+                
+                parts = table.iloc[index+5: len(table)][column].dropna()
+                print(parts)
+                
+                # if len(parts) == 0:
+                #     logging.warning(f"The collection {compositions[value]} was empty and thus removed")
+                #     del compositions[value]
+                #     list_of_rows.remove(value)
+                
+               # else:
+                collection_dict['Parts'] = parts.tolist()
+                all_parts+=collection_dict["Parts"]
+                
+        compositions[table.iloc[index][1]] = collection_dict
     else:
         names = table.iloc[index: index+6][0].tolist()
+    
 
-#Extract part names from compositions
-all_parts = []
-   
-for column in range(1,5):
-    for index, value in enumerate(list_of_rows):
-        if index == len(list_of_rows)-1:
-            parts = table.iloc[value+5: len(table)][column].dropna()
-        else:
-            print(parts)
-            parts = table.iloc[value+5: list_of_rows[index+1]][column].dropna()
-    # if len(parts) == 0:
-    #     logging.warning(f"The collection {compositions[value]} was empty and thus removed")
-    #     # del compositions[value]
-    #     # list_of_rows.remove(value)
+    #Extract part names from compositions   
+    for column in range(1,5):
+     #   for index, value in enumerate(list_of_rows):
+           # if index == len(list_of_rows)-1:
+        collection_dict[table.iloc[index+1][column]]['Parts'] = table.iloc[index+5: len(table)][column].dropna()
+            # else:
+            #     print(parts)
+            #     parts = table.iloc[value+5: list_of_rows[index+1]][column].dropna()
+        # if len(parts) == 0:
+        #     logging.warning(f"The collection {compositions[value]} was empty and thus removed")
+        #     # del compositions[value]
+        #     # list_of_rows.remove(value)
+                
+       # else:
+        # collection_dict[column]['Parts'] = parts.tolist()
+        # all_parts+=collection_dict[column]["Parts"]
             
-   # else:
-        compositions[value]['Parts'] = parts.tolist()
-        all_parts+=compositions[value]["Parts"]
-        
 all_parts = set(all_parts) #set eliminates duplicates
+
+
+
 
 #Check if Collection names are alphanumeric and separated by underscore
 for index, value in enumerate(list_of_rows):
@@ -130,7 +151,7 @@ for index, value in enumerate(list_of_rows):
 doc = Document()
 
 for library in libraries:
-    sbol2.setHomespace('http://sys-bio.org')
+   # sbol2.setHomespace('http://sys-bio.org')
     library = sbol2.PartShop(libraries[library])
     for part in all_parts:
         print(part)

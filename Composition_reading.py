@@ -67,6 +67,8 @@ if table.iloc[0][0] == "Libraries" and table.iloc[0][1] == "Abbreviations":
 
 #Loop over all rows and find those where each block begins
 compositions = dict()
+list_of_rows = []
+design_names = []
 all_parts = []
 labels = np.array(["Collection Name:", "Name:", "Description:", "Strain (optional)",
           "Integration Locus (optional)", "Part Sequence:"])
@@ -76,6 +78,7 @@ for index, row in table.iterrows():
     comparison = labs == labels 
     
     if row[0] == "Collection Name:" and comparison.all() :
+        list_of_rows.append(index) #record lines where block starts to facilitate extracting parts
         #check if collection name exists in a previous block if so add to that dictionary or if not
         #create a new one
         try:
@@ -87,42 +90,57 @@ for index, row in table.iterrows():
             if type(table.iloc[index+1][column]) is str: #check if name is not empty
                 collection_dict[table.iloc[index+1][column]] = {"Description" : {table.iloc[index+2][column]},
                                                                 "Parts" : {}}
+                design_names.append(table.iloc[index+1][column])
                 
-                parts = table.iloc[index+5: len(table)][column].dropna()
-                print(parts)
-                
-                # if len(parts) == 0:
-                #     logging.warning(f"The collection {compositions[value]} was empty and thus removed")
-                #     del compositions[value]
-                #     list_of_rows.remove(value)
-                
-               # else:
-                collection_dict['Parts'] = parts.tolist()
-                all_parts+=collection_dict["Parts"]
-                
-        compositions[table.iloc[index][1]] = collection_dict
+                compositions[table.iloc[index][1]] = collection_dict
+                print(table.iloc[index][1])
     else:
         names = table.iloc[index: index+6][0].tolist()
     
-
-    #Extract part names from compositions   
-    for column in range(1,5):
-     #   for index, value in enumerate(list_of_rows):
-           # if index == len(list_of_rows)-1:
-        collection_dict[table.iloc[index+1][column]]['Parts'] = table.iloc[index+5: len(table)][column].dropna()
-            # else:
-            #     print(parts)
-            #     parts = table.iloc[value+5: list_of_rows[index+1]][column].dropna()
-        # if len(parts) == 0:
-        #     logging.warning(f"The collection {compositions[value]} was empty and thus removed")
-        #     # del compositions[value]
-        #     # list_of_rows.remove(value)
                 
-       # else:
-        # collection_dict[column]['Parts'] = parts.tolist()
-        # all_parts+=collection_dict[column]["Parts"]
-            
+#Extract part names from compositions   
+for index, value in enumerate(list_of_rows):
+    for name in design_names:
+        if index == len(list_of_rows)-1: #if last block, read until end of table
+            parts = table.iloc[value+5: len(table)][column].dropna()
+        else: #if not last block, read until next block
+            print(parts)
+            parts = table.iloc[value+5: list_of_rows[index+1]][column].dropna()
+    
+        # if len(parts) == 0:
+            # logging.warning(f"The collection {compositions[value]} was empty and thus removed")
+            # del compositions[value]
+            # list_of_rows.remove(value)
+                
+        # else:
+        compositions[name]['Parts'] = parts.tolist()
+        all_parts+=compositions[name]["Parts"]
+        
 all_parts = set(all_parts) #set eliminates duplicates
+
+
+
+#Extract part names from compositions
+all_parts = []
+     
+for index, value in enumerate(list_of_rows):
+    if index == len(list_of_rows)-1:
+        parts = table.iloc[value+5: len(table)][1].dropna()
+    else:
+        parts = table.iloc[value+5: list_of_rows[index+1]][1].dropna()
+    
+    if len(parts) == 0:
+        del compositions[value]
+        list_of_rows.remove(value)
+    else:
+        compositions[value]['Parts'] = parts.tolist()
+        all_parts+=compositions[value]["Parts"]
+        
+all_parts = set(all_parts) #set eliminates duplicates
+
+
+
+
 
 
 

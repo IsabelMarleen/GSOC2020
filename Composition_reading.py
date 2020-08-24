@@ -92,29 +92,29 @@ for index, row in table.iterrows():
                                                                 "Parts" : {}}
                 design_names.append(table.iloc[index+1][column])
                 
-                compositions[table.iloc[index][1]] = collection_dict
-                print(table.iloc[index][1])
+                compositions[table.iloc[index][1]] = collection_dict #assign collection_dict to correct collection in compositions
     else:
         names = table.iloc[index: index+6][0].tolist()
     
                 
 #Extract part names from compositions   
 for index, value in enumerate(list_of_rows):
-    for name in design_names:
+    for column in range(1,5):
         if index == len(list_of_rows)-1: #if last block, read until end of table
             parts = table.iloc[value+5: len(table)][column].dropna()
         else: #if not last block, read until next block
-            print(parts)
             parts = table.iloc[value+5: list_of_rows[index+1]][column].dropna()
-    
+
+        # collection_dict = compositions[table.iloc[value][1]]
         # if len(parts) == 0:
             # logging.warning(f"The collection {compositions[value]} was empty and thus removed")
             # del compositions[value]
             # list_of_rows.remove(value)
                 
         # else:
-        compositions[name]['Parts'] = parts.tolist()
-        all_parts+=compositions[name]["Parts"]
+        compositions[table.iloc[value][1]][table.iloc[value+1][column]]['Parts'] = parts.tolist()
+        all_parts+=compositions[table.iloc[value][1]][table.iloc[value+1][column]]["Parts"]
+        # compositions[table.iloc[value][1]] = collection_dict
         
 all_parts = set(all_parts) #set eliminates duplicates
 

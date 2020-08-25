@@ -132,6 +132,7 @@ for index, value in enumerate(list_of_rows):
             compositions[collect_name][part_name]['Parts'] = parts.tolist()
             all_parts+=parts.tolist()
 
+#delete any collections with no composite parts
 empty_collect = []
 for key in compositions:
     if len(compositions[key]) == 0:
@@ -160,13 +161,6 @@ all_parts = set(all_parts) #set eliminates duplicates
 #         all_parts+=compositions[value]["Parts"]
         
 # all_parts = set(all_parts) #set eliminates duplicates
-
-
-
-
-
-
-
 
 # #Check if Collection names are alphanumeric and separated by underscore
 # for index, value in enumerate(list_of_rows):

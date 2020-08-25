@@ -68,75 +68,98 @@ if table.iloc[0][0] == "Libraries" and table.iloc[0][1] == "Abbreviations":
 #Loop over all rows and find those where each block begins
 compositions = dict()
 list_of_rows = []
-design_names = []
 all_parts = []
 labels = np.array(["Collection Name:", "Name:", "Description:", "Strain (optional)",
           "Integration Locus (optional)", "Part Sequence:"])
+#loop over all rows in sheet
 for index, row in table.iterrows():
-    #identifies set of six rows in table where first column matches the labels
+    
+    #check if six rows starting from current row equal the preset labels
     labs = np.asarray(table.iloc[index : index+6][0])
     comparison = labs == labels 
     
+    #if labels do match
     if row[0] == "Collection Name:" and comparison.all() :
-        list_of_rows.append(index) #record lines where block starts to facilitate extracting parts
-        #check if collection name exists in a previous block if so add to that dictionary or if not
-        #create a new one
+        collect_name = table.iloc[index][1]
+        
+        #see if the collection name already exists in compositions dictionary
         try:
-            collection_dict = compositions[table.iloc[index][1]]
+            #if it does use the existing dictionary
+            collection_dict = compositions[collect_name]
         except:
+            #if not create a new one
             collection_dict = {}
             
-        for column in range(1,5):
-            if type(table.iloc[index+1][column]) is str: #check if name is not empty
-                collection_dict[table.iloc[index+1][column]] = {"Description" : {table.iloc[index+2][column]},
-                                                                "Parts" : {}}
-                design_names.append(table.iloc[index+1][column])
-                
-                compositions[table.iloc[index][1]] = collection_dict #assign collection_dict to correct collection in compositions
-    else:
-        names = table.iloc[index: index+6][0].tolist()
+        columns = 0
+        #for every 'name' row cycle through the columns
+        for column in range(1,len(table.iloc[index+1])): 
+            part_name = table.iloc[index+1][column]
+            #if the column isn't empty
+            if type(part_name) is str:
+                collection_dict[part_name] = {"Description" : {table.iloc[index+2][column]},
+                                                  "Parts" : {}}
+                columns += 1
+        #add the index of collection name row to the list of rows
+        #and add number of columns used
+        list_of_rows.append((index, columns))  
+                                                  
+        #add new items to compositions dictionary
+        compositions[collect_name] = collection_dict
     
-                
-#Extract part names from compositions   
+            
+# def get_parts(list_of_rows, table):
+len_list_of_rows = len(list_of_rows)
 for index, value in enumerate(list_of_rows):
-    for column in range(1,5):
-        if index == len(list_of_rows)-1: #if last block, read until end of table
-            parts = table.iloc[value+5: len(table)][column].dropna()
-        else: #if not last block, read until next block
-            parts = table.iloc[value+5: list_of_rows[index+1]][column].dropna()
-
-        # collection_dict = compositions[table.iloc[value][1]]
-        # if len(parts) == 0:
-            # logging.warning(f"The collection {compositions[value]} was empty and thus removed")
-            # del compositions[value]
-            # list_of_rows.remove(value)
-                
-        # else:
-        compositions[table.iloc[value][1]][table.iloc[value+1][column]]['Parts'] = parts.tolist()
-        all_parts+=compositions[table.iloc[value][1]][table.iloc[value+1][column]]["Parts"]
-        # compositions[table.iloc[value][1]] = collection_dict
+    row_index = value[0]
+    collect_name = table.iloc[row_index][1]
+    #for column in the row with names in it
+    for column in range(1,value[1]+1):
+        part_name = table.iloc[row_index+1][column]
         
+        #if it is the last block in the spreadsheet
+        if index == len_list_of_rows-1:
+            #read from the parts row to the end of the table
+            parts = table.iloc[row_index+5: len(table)][column].dropna()
+        else:
+            #if not last block, read until next block
+            parts = table.iloc[row_index+5: list_of_rows[index+1][0]][column].dropna()
+
+        if len(parts) == 0:
+            logging.warning(f"The collection {collect_name} was empty and thus removed")
+            del compositions[collect_name][part_name]
+                
+        else:
+            compositions[collect_name][part_name]['Parts'] = parts.tolist()
+            all_parts+=parts.tolist()
+
+empty_collect = []
+for key in compositions:
+    if len(compositions[key]) == 0:
+        empty_collect.append(key)
+for key in empty_collect:
+    del compositions[key]
+    
 all_parts = set(all_parts) #set eliminates duplicates
 
 
 
-#Extract part names from compositions
-all_parts = []
+# #Extract part names from compositions
+# all_parts = []
      
-for index, value in enumerate(list_of_rows):
-    if index == len(list_of_rows)-1:
-        parts = table.iloc[value+5: len(table)][1].dropna()
-    else:
-        parts = table.iloc[value+5: list_of_rows[index+1]][1].dropna()
+# for index, value in enumerate(list_of_rows):
+#     if index == len(list_of_rows)-1:
+#         parts = table.iloc[value+5: len(table)][1].dropna()
+#     else:
+#         parts = table.iloc[value+5: list_of_rows[index+1]][1].dropna()
     
-    if len(parts) == 0:
-        del compositions[value]
-        list_of_rows.remove(value)
-    else:
-        compositions[value]['Parts'] = parts.tolist()
-        all_parts+=compositions[value]["Parts"]
+#     if len(parts) == 0:
+#         del compositions[value]
+#         list_of_rows.remove(value)
+#     else:
+#         compositions[value]['Parts'] = parts.tolist()
+#         all_parts+=compositions[value]["Parts"]
         
-all_parts = set(all_parts) #set eliminates duplicates
+# all_parts = set(all_parts) #set eliminates duplicates
 
 
 
@@ -145,25 +168,25 @@ all_parts = set(all_parts) #set eliminates duplicates
 
 
 
-#Check if Collection names are alphanumeric and separated by underscore
-for index, value in enumerate(list_of_rows):
-    old = compositions[value]['Collection Name'] #for error warning
-    title = compositions[value]['Collection Name'].replace('_', '') #remove underscore to use isalnum()
-    if title.isalnum():
-        print(f"Collection name {compositions[value]['Collection Name']} is valid")
-    else: #replace special characters with numbers
-        for letter in title:
-            if ord(letter) > 122:
-                #122 is the highest decimal code number for common latin letters or arabic numbers
-                #this helps identify special characters like ä or ñ, which isalnum() returns as true
-                #the characters that don't meet this criterion are replaced by their decimal code number separated by an underscore
-                compositions[value]['Collection Name'] = compositions[value]['Collection Name'].replace(letter, str( f"_{ord(letter)}"))
-            else:
-                letter = re.sub('[\w, \s]', '', letter) #remove all letters, numbers and whitespaces
-                #this enables replacing all other special characters that are under 122
-                if len(letter) > 0:
-                    compositions[value]['Collection Name'] = compositions[value]['Collection Name'].replace(letter, str( f"_{ord(letter)}"))
-        print(f"Collection name {old} was not valid and replaced by {compositions[value]['Collection Name']}")
+# #Check if Collection names are alphanumeric and separated by underscore
+# for index, value in enumerate(list_of_rows):
+#     old = compositions[value]['Collection Name'] #for error warning
+#     title = compositions[value]['Collection Name'].replace('_', '') #remove underscore to use isalnum()
+#     if title.isalnum():
+#         print(f"Collection name {compositions[value]['Collection Name']} is valid")
+#     else: #replace special characters with numbers
+#         for letter in title:
+#             if ord(letter) > 122:
+#                 #122 is the highest decimal code number for common latin letters or arabic numbers
+#                 #this helps identify special characters like ä or ñ, which isalnum() returns as true
+#                 #the characters that don't meet this criterion are replaced by their decimal code number separated by an underscore
+#                 compositions[value]['Collection Name'] = compositions[value]['Collection Name'].replace(letter, str( f"_{ord(letter)}"))
+#             else:
+#                 letter = re.sub('[\w, \s]', '', letter) #remove all letters, numbers and whitespaces
+#                 #this enables replacing all other special characters that are under 122
+#                 if len(letter) > 0:
+#                     compositions[value]['Collection Name'] = compositions[value]['Collection Name'].replace(letter, str( f"_{ord(letter)}"))
+#         print(f"Collection name {old} was not valid and replaced by {compositions[value]['Collection Name']}")
 
 
 doc = Document()
@@ -172,7 +195,7 @@ for library in libraries:
    # sbol2.setHomespace('http://sys-bio.org')
     library = sbol2.PartShop(libraries[library])
     for part in all_parts:
-        print(part)
+        # print(part)
         library.pull(part, doc)
 
 # bsu = 'https://synbiohub.org/public/bsu'

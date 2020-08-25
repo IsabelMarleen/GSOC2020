@@ -12,7 +12,7 @@ import os
 import logging
 from col_to_excel import col_to_excel
 import sbol2
-from sbol2 import Document, PartShop
+from sbol2 import Document, PartShop, SO_GENE
 import re
 
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
@@ -96,7 +96,7 @@ for index, row in table.iterrows():
             part_name = table.iloc[index+1][column]
             #if the column isn't empty
             if type(part_name) is str:
-                collection_dict[part_name] = {"Description" : {table.iloc[index+2][column]},
+                collection_dict[part_name] = {"Description" : table.iloc[index+2][column],
                                                   "Parts" : {}}
                 columns += 1
         #add the index of collection name row to the list of rows
@@ -125,7 +125,7 @@ for index, value in enumerate(list_of_rows):
             parts = table.iloc[row_index+5: list_of_rows[index+1][0]][column].dropna()
 
         if len(parts) == 0:
-            logging.warning(f"The collection {collect_name} was empty and thus removed")
+            logging.warning(f"The design {part_name} in the collection {collect_name} was empty and thus removed")
             del compositions[collect_name][part_name]
                 
         else:
@@ -138,116 +138,65 @@ for key in compositions:
     if len(compositions[key]) == 0:
         empty_collect.append(key)
 for key in empty_collect:
+    logging.warning(f"The collection {key} was empty and thus removed")
     del compositions[key]
+    
     
 all_parts = set(all_parts) #set eliminates duplicates
 
 
 
-# #Extract part names from compositions
-# all_parts = []
-     
-# for index, value in enumerate(list_of_rows):
-#     if index == len(list_of_rows)-1:
-#         parts = table.iloc[value+5: len(table)][1].dropna()
-#     else:
-#         parts = table.iloc[value+5: list_of_rows[index+1]][1].dropna()
-    
-#     if len(parts) == 0:
-#         del compositions[value]
-#         list_of_rows.remove(value)
-#     else:
-#         compositions[value]['Parts'] = parts.tolist()
-#         all_parts+=compositions[value]["Parts"]
-        
-# all_parts = set(all_parts) #set eliminates duplicates
-
-# #Check if Collection names are alphanumeric and separated by underscore
-# for index, value in enumerate(list_of_rows):
-#     old = compositions[value]['Collection Name'] #for error warning
-#     title = compositions[value]['Collection Name'].replace('_', '') #remove underscore to use isalnum()
-#     if title.isalnum():
-#         print(f"Collection name {compositions[value]['Collection Name']} is valid")
-#     else: #replace special characters with numbers
-#         for letter in title:
-#             if ord(letter) > 122:
-#                 #122 is the highest decimal code number for common latin letters or arabic numbers
-#                 #this helps identify special characters like ä or ñ, which isalnum() returns as true
-#                 #the characters that don't meet this criterion are replaced by their decimal code number separated by an underscore
-#                 compositions[value]['Collection Name'] = compositions[value]['Collection Name'].replace(letter, str( f"_{ord(letter)}"))
-#             else:
-#                 letter = re.sub('[\w, \s]', '', letter) #remove all letters, numbers and whitespaces
-#                 #this enables replacing all other special characters that are under 122
-#                 if len(letter) > 0:
-#                     compositions[value]['Collection Name'] = compositions[value]['Collection Name'].replace(letter, str( f"_{ord(letter)}"))
-#         print(f"Collection name {old} was not valid and replaced by {compositions[value]['Collection Name']}")
+#Check if Collection names are alphanumeric and separated by underscore
+for key in compositions:
+    old = key #for error warning
+    title = key.replace('_', '') #remove underscore to use isalnum()
+    if title.isalnum():
+        print(f"Collection name {key} is valid")
+    else: #replace special characters with numbers
+        for letter in title:
+            if ord(letter) > 122:
+                #122 is the highest decimal code number for common latin letters or arabic numbers
+                #this helps identify special characters like ä or ñ, which isalnum() returns as true
+                #the characters that don't meet this criterion are replaced by their decimal code number separated by an underscore
+                key = key.replace(letter, str( f"_{ord(letter)}"))
+            else:
+                letter = re.sub('[\w, \s]', '', letter) #remove all letters, numbers and whitespaces
+                #this enables replacing all other special characters that are under 122
+                if len(letter) > 0:
+                    key = key.replace(letter, str( f"_u{ord(letter)}"))
+        temp_collect = compositions[old]
+        del compositions[old]
+        compositions[key] = temp_collect
+        print(f"Collection name {old} was not valid and replaced by {key}")
 
 
 doc = Document()
+sbol2.Config.setOption('sbol_typed_uris', False)
 
 for library in libraries:
-   # sbol2.setHomespace('http://sys-bio.org')
     library = sbol2.PartShop(libraries[library])
     for part in all_parts:
-        # print(part)
-        library.pull(part, doc)
+        try:
+            library.pull(part, doc)
+        except:
+            print(f"This part {part} was not in library {library}")
 
-# bsu = 'https://synbiohub.org/public/bsu'
-# bsu = sbol2.PartShop(bsu)
-# for part in all_parts:
-#     print(part)
-#     bsu.pull(part, doc)
+
+for collection in compositions:
+    for design in compositions[collection]:
+        composite_design = doc.componentDefinitions.create(design)
+        composite_design.assemblePrimaryStructure(compositions[collection][design]["Parts"])
+        composite_design.compile()
+        composite_design.sequence
+
+        if type(compositions[collection][design]["Description"]) is str:
+            composite_design.description = compositions[collection][design]["Description"]
+
+doc.write("Compositions1.xml")
+
+with open("Compositions1.xml", "r") as file:
+    data = file.read()
     
-
-#bsu.pull('BO_32977', doc)
-#'BBa_E0040', 'BBa_I719005', 'BBa_M36010', 'BBa_R0040'
-    
-    
-# GSOC_SBH_URL = 'https://synbiohub.org'
-# collection = 'https://synbiohub.org/public/igem/igem_collection/1'
-# display_id = 'BBa_E0040'
-# query = sbol2.SearchQuery()
-# query[sbol2.SBOL_COLLECTION] = collection
-# query[sbol2.SBOL_DISPLAY_ID] = display_id
-# # GSOC is always looking for DNA Region
-# query[sbol2.SBOL_TYPES] = sbol2.BIOPAX_DNA
-# part_shop = sbol2.PartShop(GSOC_SBH_URL)
-# response = part_shop.search(query)
-# # At least one item in return should be the
-# # expected return: https://synbiohub.org/public/igem/BBa_E0040/1
-# identities = [r.identity for r in response]
-# # self.assertIn('https://synbiohub.org/public/igem/BBa_E0040/1', identities)
-# # #
-# # # All items in response should have name == GFP exactly.
-# # display_ids = [r.displayId == display_id for r in response]
-# # self.assertTrue(all(display_ids))
-
-
-
-
-# rbs = doc.componentDefinitions['BBa_E0040']
-# cds = doc.componentDefinitions['BBa_I719005']
-# ppp = doc.componentDefinitions['BBa_R0040']
-
-
-#for key, value in compositions.items():
-#    print(value["Parts"])
-
-
-# Create a new empty device named `my_device`
-
-# Create a new empty device named `my_device`
-composition_component= doc.componentDefinitions.create('composition_component')
-composition_component.assemblePrimaryStructure(list(all_parts))
-# for c in composition_component.getPrimaryStructure():
-#     print(cd.displayId)
-    
-# nucleotides = composition_component.compile()
-# print (nucleotides)
-# seq = composition_component.sequence
-# print(seq.elements)
-
-# composition_component.roles = [SO_GENE]
-
-
-
+with open("Compositions1.xml", "w") as file:
+    data = data.replace("<prov:endedAtTime>2017-03-06T15:00:00+00:00</prov:endedAtTime>", "<prov:endedAtTime>2017-03-06T15:00:00.000+00:00</prov:endedAtTime>")
+    file.write(data)

@@ -134,7 +134,8 @@ def get_parts(list_of_rows, table, compositions):
     for key in empty_collect:
         logging.warning(f"The collection {key} was empty and thus removed")
         del compositions[key]
-    
+        if len(compositions) == 0: #Throw an error if no collections remain
+            logging.error("None of the collections contain any parts and no SBOL can be created")
     return(compositions, all_parts)
 
 def name_check(compositions):
@@ -219,13 +220,13 @@ compositions = name_check(compositions)
 
 #Create sbol
 doc = write_sbol_comp(libraries, compositions)
-doc.write("Compositions1.xml")
+# doc.write("Compositions1.xml")
 
-#Edit igem2sbol activity to include milliseconds and avoid validation error
-#The underlying issue was already reported
-with open("Compositions1.xml", "r") as file:
-    data = file.read()
+# #Edit igem2sbol activity to include milliseconds and avoid validation error
+# #The underlying issue was already reported
+# with open("Compositions1.xml", "r") as file:
+#     data = file.read()
     
-with open("Compositions1.xml", "w") as file:
-    data = data.replace("<prov:endedAtTime>2017-03-06T15:00:00+00:00</prov:endedAtTime>", "<prov:endedAtTime>2017-03-06T15:00:00.000+00:00</prov:endedAtTime>")
-    file.write(data)
+# with open("Compositions1.xml", "w") as file:
+#     data = data.replace("<prov:endedAtTime>2017-03-06T15:00:00+00:00</prov:endedAtTime>", "<prov:endedAtTime>2017-03-06T15:00:00.000+00:00</prov:endedAtTime>")
+#     file.write(data)

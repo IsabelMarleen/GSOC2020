@@ -95,7 +95,7 @@ ontology= ontology.to_dict("dict")[1]
 
 #Description
 def quality_check(filled_library, blank_library, filled_metadata, blank_metadata, filled_description,
-                  blank_description, use_cols = [0,1]):
+                  blank_description, description_col = 9, use_cols = [0,1]):
     """
     the function compares the edited excel spreadsheet with the template
 
@@ -113,6 +113,8 @@ def quality_check(filled_library, blank_library, filled_metadata, blank_metadata
         Dataframe containing the description data
     blank_description : DATAFRAME
         Dataframe containing the description template
+    description:col: INTEGER, default = 9
+        Defines which row the desccription os located in  
     usecols: LIST, default = [0, 1]
         Defines which columns were used read for the metadata section (note column A is 0)
 

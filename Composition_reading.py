@@ -12,7 +12,7 @@ import os
 import logging
 from col_to_excel import col_to_excel
 import sbol2
-from sbol2 import Document
+from sbol2 import Document, Collection
 import re
 
 cwd = os.path.dirname(os.path.abspath("__file__")) #get current working directory
@@ -51,7 +51,8 @@ def quality_check_metadata(filled_composition_metadata, blank_composition_metada
     quality_check_metadata(filled_metadata, blank_metadata, 
                            use_cols = [0, 1], nrows = 8)
     """
-    comparison = np.where((filled_composition_metadata == blank_composition_metadata)|(blank_composition_metadata.isna()), True, False)
+    comparison = np.where((filled_composition_metadata == blank_composition_metadata)|
+                          (blank_composition_metadata.isna()), True, False)
     excel_cell_names = []
     for column in range(0, len(use_cols)):
         for row in range(0, comparison.shape[0]):
@@ -103,7 +104,8 @@ def load_libraries(table):
                 else:
                     libraries[table.iloc[index][0]] = table.iloc[index][0]
     else:
-        logging.error("The template was altered by removing the library section. This means no parts can be loaded and no SBOL can be created.")
+        logging.error("""The template was altered by removing the library section. 
+                      This means no parts can be loaded and no SBOL can be created.""")
     return(libraries)
 
 def get_data(table, labels = np.array(["Collection Name:", "Name:", "Description:", "Strain (optional)",
@@ -284,7 +286,8 @@ def check_name(compositions):
                 if ord(letter) > 122:
                     #122 is the highest decimal code number for common latin letters or arabic numbers
                     #this helps identify special characters like ä or ñ, which isalnum() returns as true
-                    #the characters that don't meet this criterion are replaced by their decimal code number separated by an underscore
+                    #the characters that don't meet this criterion are replaced by their decimal code number 
+                    #separated by an underscore
                     key = key.replace(letter, str( f"_{ord(letter)}"))
                 else:
                     letter = re.sub('[\w, \s]', '', letter) #remove all letters, numbers and whitespaces
@@ -343,6 +346,8 @@ def write_sbol_comp(libraries, compositions, all_parts):
     
     
     for collection in compositions:
+        print(collection)
+        collection1 = doc.collections.create(collection)
         for design in compositions[collection]:
             composite_design = doc.componentDefinitions.create(design)
             composite_design.assemblePrimaryStructure(compositions[collection][design]["Parts"])
@@ -384,14 +389,14 @@ compositions, all_parts = get_parts(list_of_rows, table, compositions)
 compositions = check_name(compositions)
 
 #Create sbol
-doc = write_sbol_comp(libraries, compositions)
-doc.write("Compositions1.xml")
+doc = write_sbol_comp(libraries, compositions, all_parts)
+doc.write("Compositions2.xml")
 
 #Edit igem2sbol activity to include milliseconds and avoid validation error
 #The underlying issue was already reported
-with open("Compositions1.xml", "r") as file:
+with open("Compositions2.xml", "r") as file:
     data = file.read()
     
-with open("Compositions1.xml", "w") as file:
+with open("Compositions2.xml", "w") as file:
     data = data.replace("<prov:endedAtTime>2017-03-06T15:00:00+00:00</prov:endedAtTime>", "<prov:endedAtTime>2017-03-06T15:00:00.000+00:00</prov:endedAtTime>")
     file.write(data)

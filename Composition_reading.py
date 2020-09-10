@@ -347,7 +347,8 @@ def write_sbol_comp(libraries, compositions, all_parts):
     
     for collection in compositions:
         print(collection)
-        collection1 = doc.collections.create(collection)
+        coll = Collection(collection)
+        doc.addCollection(coll)
         for design in compositions[collection]:
             composite_design = doc.componentDefinitions.create(design)
             composite_design.assemblePrimaryStructure(compositions[collection][design]["Parts"])
@@ -356,6 +357,9 @@ def write_sbol_comp(libraries, compositions, all_parts):
     
             if type(compositions[collection][design]["Description"]) is str:
                 composite_design.description = compositions[collection][design]["Description"]
+            
+            coll.members += [composite_design.identity]
+            # doc.write("Test_Collections.xml")
     return(doc)
 
 #Load Data

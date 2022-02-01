@@ -1,12 +1,11 @@
 # GSoC2020
 
-This repository represents the raw state and tracked the progress of my Google Summer of Code 2020 project. If you are interested in the tidy version that is continously being developed and intended to be used, you should look at the following repositories. The project was split into three repositories, one for each of the plugins that were developed in the context of this project and one for the functionality of converting Excel into SBOL itself.
+This repository has been archived, because it tracked the progress of my Google Summer of Code 2020 project and is no longer being maintained. The resulting software that is continously being developed and intended for use can be found in the following two repositories. The project was split into two repositories, one for the SynBioHub plugins that were developed in the context of this project and one for the Python package for converting Excel into SBOL itself.
 
-- Plugin Submit Excel Library (https://github.com/SynBioHub/Plugin-Submit-Excel-Library)
-- Plugin Submit Excel Library (https://github.com/SynBioHub/Plugin-Submit-Excel-Composition)
-- Excel to SBOL (https://github.com/SynBioDex/Excel-to-SBOL)
+- [Excel SynBioHub Submission Plugin](https://github.com/SynBioHub/Plugin-Submit-Excel2SBOL)
+- [Excel to SBOL package](https://github.com/SynBioDex/Excel-to-SBOL)
 
-My progress throughout the summer can also be understodd by looking at the blog I kept for that purpose (https://medium.com/@IsaMarleen).
+My progress throughout the summer can also be understood by looking at the blog I kept for that purpose (https://medium.com/@IsaMarleen).
 
 ## Spreadsheet Plug-in for SynBioHub
 
